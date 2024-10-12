@@ -340,9 +340,9 @@ const Ventasvf = () => {
 
 
                     <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="id_proveedor_vehiculo">Cliente Vehiculo</InputLabel>
+                        <InputLabel htmlFor="id_clientes">Cliente Vehiculo</InputLabel>
                         <Select
-                            name="id_proveedor_vehiculo"
+                            name="id_clientes"
                             value={body.id_clientes || ''}
                             onChange={onChange}
                             variant="outlined"

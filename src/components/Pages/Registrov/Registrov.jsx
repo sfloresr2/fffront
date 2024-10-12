@@ -31,7 +31,7 @@ const Registrov = () => {
         motor:"",// Número o identificación del motor del vehículo.
         cilindros:"",// Número de cilindros del motor.
         c_c:"",	// Cilindrada o capacidad cúbica del motor.
-        id_proveedor_vehiculo: "",// Identificación del proveedor o vendedor del vehículo.
+        id_clientes: "",// Identificación del proveedor o vendedor del vehículo.
         fecha_venta: "",	// Fecha en que el vehículo fue adquirido.
         precio_compra: "",	// Precio de compra del vehículo.
         precio_venta: ""// Valor estimado o actual del vehículo.
@@ -102,7 +102,7 @@ const Registrov = () => {
     // Función que obtiene la lista de proveedores
     const fetchProveedores = async () => {
         try {  
-            const { data } = await ApiRequest().get('/proveedoresv'); // Realiza una solicitud GET a la API para obtener la lista de proveedores
+            const { data } = await ApiRequest().get('/clientesvvv'); // Realiza una solicitud GET a la API para obtener la lista de proveedores
             setRoles(data); // Actualiza el estado 'roles' con la lista de proveedores obtenida de la API
         } catch (error) {
             console.error('Error al obtener la lista de proveedores:', error); // Si ocurre un error durante la solicitud, se captura aquí y se muestra un mensaje en la consola
@@ -129,7 +129,7 @@ const Registrov = () => {
         { field: 'motor', headerName: 'Motor', width: 220 },// Columna que muestra el número del motor del vehículo. Ancho de 220 píxeles.
         { field: 'cilindros', headerName: 'Cilindros', width: 220 },// Columna que muestra el número de cilindros del motor del vehículo. Ancho de 220 píxeles.
         { field: 'c_c', headerName: 'C_C', width: 220 },// Columna que muestra la cilindrada (capacidad cúbica) del motor del vehículo. Ancho de 220 píxeles.
-        { field: 'nombre_proveedor_vehiculo', headerName: 'Proveedor de Vehiculos', width: 220 },// Columna que muestra el nombre del proveedor del vehículo. Ancho de 220 píxeles.
+        { field: 'nombre_clientes', headerName: 'Clientes de Vehiculos', width: 220 },// Columna que muestra el nombre del proveedor del vehículo. Ancho de 220 píxeles.
         // Columna que muestra la fecha de compra del vehículo.
         // - 'field': 'fecha_compra' hace referencia al campo 'fecha_compra' en los datos del vehículo.
         // - 'headerName': 'Fecha Compra' es el encabezado que se verá en la tabla.
@@ -686,18 +686,18 @@ const generatePDFAutowini = () => {
 
 
                     <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="id_proveedor_vehiculo">Proveedor Vehiculo</InputLabel>
+                        <InputLabel htmlFor="id_clientes">Cliente Vehiculo</InputLabel>
                         <Select
-                            name="id_proveedor_vehiculo"
-                            value={body.id_proveedor_vehiculo || ''}
+                            name="id_clientes"
+                            value={body.id_clientes || ''}
                             onChange={onChange}
                             variant="outlined"
                             size="small"
                             fullWidth
                         >
-                            {roles.map((id_prov) => (
-                                <MenuItem key={id_prov.id} value={id_prov.id}>
-                                    {id_prov.nombre}
+                            {roles.map((id_clie) => (
+                                <MenuItem key={id_clie.id} value={id_clie.id}>
+                                    {id_clie.nombre}
                                 </MenuItem>
                             ))}
                         </Select>
