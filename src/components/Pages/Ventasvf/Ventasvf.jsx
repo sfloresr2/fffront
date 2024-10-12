@@ -25,7 +25,7 @@ const Ventasvf = () => {
             cilindros:"",
             c_c:"",	
             
-            id_proveedor_vehiculo: "",
+            id_clientes: "",
             fecha_venta: "",	
             precio_compra: "",	
             precio_venta: ""	
@@ -51,7 +51,7 @@ const Ventasvf = () => {
 
     const fetchRoles = async () => {
         try {
-            const response = await ApiRequest().get('/proveedoresvvv');
+            const response = await ApiRequest().get('/clientesvvv');
             setRoles(response.data);
         } catch (error) {
             console.error('Error fetching roles data:', error);
@@ -340,18 +340,18 @@ const Ventasvf = () => {
 
 
                     <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="id_proveedor_vehiculo">Proveedor Vehiculo</InputLabel>
+                        <InputLabel htmlFor="id_proveedor_vehiculo">Cliente Vehiculo</InputLabel>
                         <Select
                             name="id_proveedor_vehiculo"
-                            value={body.id_proveedor_vehiculo || ''}
+                            value={body.id_clientes || ''}
                             onChange={onChange}
                             variant="outlined"
                             size="small"
                             fullWidth
                         >
-                            {roles.map((id_prov) => (
-                                <MenuItem key={id_prov.id} value={id_prov.id}>
-                                    {id_prov.nombre}
+                            {roles.map((id_clie) => (
+                                <MenuItem key={id_clie.id} value={id_clie.id}>
+                                    {id_clie.nombre}
                                 </MenuItem>
                             ))}
                         </Select>
