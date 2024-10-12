@@ -80,7 +80,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
 
     const onDelete = async () => {// Función asíncrona llamada 'onDelete' que maneja la eliminación de un proveedor
         try {
-            const { data } = await ApiRequest().post('/eliminar_proveedorimpo', { id: idDelete });// Envía una solicitud POST a la API para eliminar un proveedor usando su ID
+            const { data } = await ApiRequest().post('/eliminar_clientesimpo', { id: idDelete });// Envía una solicitud POST a la API para eliminar un proveedor usando su ID
             setMensaje({ // Actualiza el estado 'mensaje' con la respuesta exitosa de la API
                 ident: new Date().getTime(),// Genera un identificador único basado en la hora actual
                 message: data.message,// Mensaje de éxito devuelto por la API
@@ -123,7 +123,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
 
     const onSubmit = async () => {// Función asíncrona llamada 'onSubmit' que maneja el envío del formulario
         try {
-            const { data } = await ApiRequest().post('/guardar_proveedorimpo', body); // Envía una solicitud POST a la API para guardar un nuevo proveedor con los datos del cuerpo del formulario
+            const { data } = await ApiRequest().post('/guardar_clientesimpo', body); // Envía una solicitud POST a la API para guardar un nuevo proveedor con los datos del cuerpo del formulario
             handleDialog();// Cierra el cuadro de diálogo de edición
             setBody(initialState);// Restablece el cuerpo del formulario a su estado inicial
             setMensaje({// Actualiza el estado 'mensaje' con la respuesta exitosa de la API
@@ -146,7 +146,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
 
     const onEdit = async () => {// Función asíncrona llamada 'onEdit' que maneja la edición de un proveedor
         try {
-            const { data } = await ApiRequest().post('/editar_proveedorimpo', body);// Envía una solicitud POST a la API para editar un proveedor con los datos del cuerpo del formulario
+            const { data } = await ApiRequest().post('/editar_clientesimpo', body);// Envía una solicitud POST a la API para editar un proveedor con los datos del cuerpo del formulario
             handleDialog();// Cierra el cuadro de diálogo de edición
             setBody(initialState);// Restablece el cuerpo del formulario a su estado inicial
             setMensaje({// Actualiza el estado 'mensaje' con la respuesta exitosa de la API
@@ -355,7 +355,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
                      {/* Botón para cancelar la acción de edición o creación */}
                     <Button variant='text' color='primary' onClick={handleDialog}>Cancelar</Button>
                     {/* Botón para guardar el proveedor, que llama a onEdit o onSubmit dependiendo del estado */}
-                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Guardar Proveedor de vehiculo</Button>
+                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Guardar Cliente de vehiculo</Button>
                 </DialogActions>
             </Dialog>
 
@@ -370,7 +370,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
                              {/* Botón para agregar un nuevo proveedor */}
-                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Agregar Proveedor de Vehiculo</Button>
+                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Agregar Cliente de Vehiculo</Button>
                         </Grid>
 
 
