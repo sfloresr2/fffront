@@ -1,5 +1,5 @@
 import React from 'react'
-import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined} from '@mui/icons-material' // Importa los nuevos iconos
+import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined, ReceiptOutlined} from '@mui/icons-material' // Importa los nuevos iconos
 
 const sidebarConfig = [
 	{
@@ -23,7 +23,7 @@ const sidebarConfig = [
 	{
 		title: 'Facturas',
 		path: '/app/facturas',
-		icon: <BarChartOutlined /> // Cambiado a un icono de inventario
+		icon: <ReceiptOutlined /> // Cambiado a un icono de inventario
 	},
 
 	{
