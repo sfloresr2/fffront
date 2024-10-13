@@ -8,7 +8,7 @@ import CommonTable from '../../common/CommonTable';// Componente de tabla reutil
 import jsPDF from 'jspdf'; // Importa la librería jsPDF, que permite generar archivos PDF desde JavaScript.
 import 'jspdf-autotable'; // Importa el plugin "autotable" de jsPDF, que facilita la creación de tablas dentro de un PDF.
 
-
+//ventas
 
 const Registrov = () => {
 
@@ -113,7 +113,7 @@ const Registrov = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 120 }, // Columna que muestra el ID (código único) del vehículo. Tiene un ancho de 120 píxeles.
-        { field: 'Codigo', headerName: 'Codigo', width: 120 },
+        { field: 'codigo', headerName: 'Codigo', width: 120 },
         { field: 'placa', headerName: 'Placa', width: 220 }, // Columna que muestra la placa del vehículo. El ancho de la columna es de 220 píxeles.
         { field: 'tipo_vehiculo', headerName: 'Tipo vehiculo', width: 220 }, // Columna que muestra el tipo de vehículo (por ejemplo, auto, moto, camión). Ancho de 220 píxeles.
         { field: 'marca', headerName: 'Marca', width: 220 }, // Columna que muestra la marca del vehículo. Tiene un ancho de 220 píxeles.
