@@ -13,7 +13,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
         descripcion: "", // Descripción del producto.
         id_proveedor: "", // ID del proveedor del producto.
         fecha_compra: "", // Fecha de compra (inicialmente vacía, sin una fecha predefinida). 
-        numero_factura: "", // Número de factura (inicialmente vacío)
+        
         cantidad: "", // Cantidad de productos.
         precio: "" // Precio del producto.   
     }; // Fin del const, Este estado inicial probablemente se usará para controlar los inputs del formulario o para resetear valores.
@@ -223,18 +223,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
                         />{/* Fin del Textfield */}
                     </Grid>{/* Fin del Grid */}
 
-                    <Grid item xs={12} sm={6}> {/* Un elemento de la cuadrícula que ocupa todo el ancho (12 columnas) en pantallas pequeñas (xs) y la mitad del ancho (6 columnas) en pantallas medianas (sm). */}
-                        <TextField
-                            margin='normal' // Aplica un margen normal al campo, mejorando el espaciado visual
-                            name='numero_factura' // Asigna un nombre al campo, que será utilizado para identificar el número de factura en el estado.
-                            value={body.numero_factura} // Vincula el campo al valor "numero_factura" en el estado "body", permitiendo que el campo muestre el número de factura actual.
-                            onChange={onChange} // Maneja el evento de cambio del campo, llamando a la función "onChange" para actualizar el estado cuando el usuario modifica el número de factura.
-                            variant='outlined' // Estilo del campo con borde, proporcionando una apariencia más definida y agradable visualmente.
-                            size='small' // Tamaño del campo, que es pequeño, haciéndolo más compacto y fácil de usar.
-                            fullWidth // Hace que el campo ocupe todo el ancho disponible del contenedor, asegurando una mejor experiencia de usuario.
-                            label='Número de Factura' // Etiqueta que se muestra en el campo, indicando al usuario que debe ingresar el número de factura.
-                        />{/* Fin del Textfield */}
-                    </Grid>{/* Fin del Grid */}
+
 
                     <Grid item xs={12} sm={6}>{/* Un elemento de la cuadrícula que ocupa todo el ancho (12 columnas) en pantallas pequeñas (xs) y la mitad del ancho (6 columnas) en pantallas medianas (sm). */}
                         <TextField
