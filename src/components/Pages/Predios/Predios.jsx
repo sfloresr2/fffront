@@ -102,7 +102,7 @@ const Predios = () => {
     // Función que obtiene la lista de proveedores
     const fetchProveedores = async () => {
         try {  
-            const { data } = await ApiRequest().get('/proveedoresv'); // Realiza una solicitud GET a la API para obtener la lista de proveedores
+            const { data } = await ApiRequest().get('/proveedoresvvv'); // Realiza una solicitud GET a la API para obtener la lista de proveedores
             setRoles(data); // Actualiza el estado 'roles' con la lista de proveedores obtenida de la API
         } catch (error) {
             console.error('Error al obtener la lista de proveedores:', error); // Si ocurre un error durante la solicitud, se captura aquí y se muestra un mensaje en la consola
@@ -257,7 +257,7 @@ const Predios = () => {
     };
 
 
-
+//esta funcion edita
     const onEdit = async () => {
         try {
             const { data } = await ApiRequest().post('/editar_vehic', body); // Realiza una solicitud POST a la API para editar un vehículo existente, enviando el objeto 'body' como datos.
