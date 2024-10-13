@@ -21,6 +21,12 @@ const sidebarConfig = [
 	},
 
 	{
+		title: 'Facturas',
+		path: '/app/facturas',
+		icon: <BarChartOutlined /> // Cambiado a un icono de inventario
+	},
+
+	{
 		title: 'Compras Productos',
 		path: '/app/productos',
 		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
