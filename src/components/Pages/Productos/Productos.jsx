@@ -108,11 +108,11 @@ const Productos = () => { // Definición del componente funcional "Productos".
 
 
     return ( // El retorno del componente, que define la estructura de la interfaz de usuario.
-        <Page title="FF | Compras"> {/* Componente "Page" que envuelve todo y establece el título de la página en la pestaña del navegador. */}
+        <Page title="FF | Compra de Producto"> {/* Componente "Page" que envuelve todo y establece el título de la página en la pestaña del navegador. */}
             <ToastAutoHide message={mensaje} /> {/* Componente que muestra un mensaje de notificación (toast) que se oculta automáticamente.Recibe el estado "mensaje" que contiene la información sobre el mensaje a mostrar. */}
             <Container maxWidth='lg'> {/* Componente "Container" que limita el ancho máximo del contenido a 'lg' (grande) para un diseño responsivo. */}
                 <Box sx={{ pb: 5 }}>  {/* Componente "Box" que aplica un margen inferior (padding bottom) de 5 unidades. */}
-                    <Typography variant="h5">Modulo {isEdit ? 'Editar Producto' : 'Compras de Producto'}</Typography> {/* Componente "Typography" que se utiliza para mostrar texto con estilos tipográficos. */}  {/* Texto que indica si el formulario está en modo de edición o en modo de compras. Utiliza un operador ternario para mostrar "Editar Producto" si "isEdit" es true, de lo contrario, muestra "Compras de Producto". */}
+                    <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Producto' : 'Compras de Producto'}</Typography> {/* Componente "Typography" que se utiliza para mostrar texto con estilos tipográficos. */}  {/* Texto que indica si el formulario está en modo de edición o en modo de compras. Utiliza un operador ternario para mostrar "Editar Producto" si "isEdit" es true, de lo contrario, muestra "Compras de Producto". */}
                 </Box>{/* Fin del Box*/}
                 <Grid container spacing={2}>  {/* Componente "Grid" que actúa como un contenedor para organizar los elementos en una cuadrícula."spacing={2}" añade espacio entre los elementos de la cuadrícula. */}
 
@@ -268,7 +268,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
                         color='primary' // Color del botón, utilizando el esquema de colores primarios definido en el tema de Material-UI. 
                         // Establece la función a llamar en el evento de clic; si "isEdit" es verdadero, llama a "onEdit", de lo contrario llama a "onSubmit".
                         onClick={isEdit ? onEdit : onSubmit}> 
-                            {isEdit ? 'Editar Producto' : 'Crear Producto'}
+                            {isEdit ? 'Editar Producto' : 'Registrar Producto de Car Wash'}
                          {/* Cambia el texto del botón dependiendo del estado de "isEdit"; muestra 'Editar Producto' si está en modo edición, o 'Crear Producto' si está en modo creación. */}    
                         </Button>
                     </Grid>{/* Fin del Grid */}

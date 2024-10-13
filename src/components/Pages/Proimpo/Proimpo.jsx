@@ -240,16 +240,16 @@ const Proimpo = () => { // Define el componente funcional 'Proimpo' usando una f
         {/* Diálogo de confirmación para la eliminación de un proveedor */}
             <Dialog maxWidth='xs' open={openDialogDelete} onClose={handleDialogDelete}>
                 <DialogTitle>
-                    ¿Eliminar proveedor de vehiculo?
+                ¿Está seguro de que desea eliminar al proveedor?
                 </DialogTitle>
                 <DialogContent>
                     <Typography variant='h5'>Esta acción no se puede deshacer</Typography>
                 </DialogContent>
                 <DialogActions>
                     {/* Botón para cancelar la acción de eliminación */}
-                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Cancelar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
                     {/* Botón para confirmar la eliminación del proveedor */}
-                    <Button variant='contained' color='primary' onClick={onDelete}>Aceptar</Button>
+                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Eliminacion</Button>
                 </DialogActions>
             </Dialog>
 
@@ -258,7 +258,7 @@ const Proimpo = () => { // Define el componente funcional 'Proimpo' usando una f
             <Dialog maxWidth='xs' open={openDialog} onClose={handleDialog}>
                 <DialogTitle>
                      {/* Título dinámico basado en el estado de edición */}
-                    {isEdit ? 'Formulario Editar Proveedor de vehiculo' : 'Formulario Crear Proveedor de vehiculo'}
+                    {isEdit ? 'Formulario de Edicion Proveedor de Vehiculo' : 'Formulario de Registro de Proveedor de Vehiculos'}
                 </DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
@@ -322,9 +322,9 @@ const Proimpo = () => { // Define el componente funcional 'Proimpo' usando una f
                 </DialogContent>
                 <DialogActions>
                      {/* Botón para cancelar la acción de edición o creación */}
-                    <Button variant='text' color='primary' onClick={handleDialog}>Cancelar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialog}>Anular Registro</Button>
                     {/* Botón para guardar el proveedor, que llama a onEdit o onSubmit dependiendo del estado */}
-                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Guardar Proveedor de vehiculo</Button>
+                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Registrar Proveedor de Vehiculos</Button>
                 </DialogActions>
             </Dialog>
 
@@ -334,12 +334,12 @@ const Proimpo = () => { // Define el componente funcional 'Proimpo' usando una f
                 <ToastAutoHide message={mensaje} />{/* Componente para mostrar mensajes temporales */}
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Modulo de Proveedores de vehiculos</Typography>
+                        <Typography variant="h5">Panel de Control de Proveedores de Vehiculos</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
                              {/* Botón para agregar un nuevo proveedor */}
-                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Agregar Proveedor de Vehiculo</Button>
+                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Registrar Proveedor de Vehiculo</Button>
                         </Grid>
 
 

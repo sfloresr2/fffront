@@ -231,23 +231,23 @@ const Proveedores = () => { // Definición del estado inicial para un proveedor
          {/* Diálogo para confirmar la eliminación de un proveedor */}
             <Dialog maxWidth='xs' open={openDialogDelete} onClose={handleDialogDelete}>
                 <DialogTitle>
-                    ¿Eliminar usuario?
+                    ¿Está seguro de que desea eliminar al proveedor de productos?
                 </DialogTitle>
                 <DialogContent>
                     <Typography variant='h5'>Esta acción no se puede deshacer</Typography>{/* Mensaje de advertencia */}
                 </DialogContent>
                 <DialogActions>
                     {/* Botón para cancelar la acción de eliminación */}
-                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Cancelar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
                     {/* Botón para confirmar la eliminación */}
-                    <Button variant='contained' color='primary' onClick={onDelete}>Aceptar</Button>
+                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Eliminacion</Button>
                 </DialogActions>
             </Dialog>
             {/* Diálogo para crear o editar un proveedor */}
             <Dialog maxWidth='xs' open={openDialog} onClose={handleDialog}>
                 <DialogTitle>
                      {/* Título dinámico dependiendo de si se está editando o creando un proveedor */}
-                    {isEdit ? 'Formulario Editar Proveedor' : 'Formulario Crear Proveedor'}
+                    {isEdit ? 'Formulario de Edicion de Proveedor de Productos' : 'Formulario de Registro de Proveedor de Productos'}
                 </DialogTitle>
                 
                 <DialogContent>
@@ -318,26 +318,26 @@ const Proveedores = () => { // Definición del estado inicial para un proveedor
                 {/* Acciones del diálogo */}
                 <DialogActions>
                     {/* Botón para cancelar la creación/edición */}
-                    <Button variant='text' color='primary' onClick={handleDialog}>Cancelar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialog}>Anular Registro</Button>
                     {/* Botón para guardar el proveedor (editado o nuevo) */}
-                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Guardar Proveedor Producto</Button>
+                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Registrar Proveedor de Productos</Button>
                 </DialogActions>
             </Dialog>
             
             {/* Página principal del módulo Proveedores de Productos */}
-            <Page title="FF| Proveedor Productos">
+            <Page title="FF| Proveedor Productos Car Wash">
                 {/* Componente para mostrar mensajes emergentes (toasts) */}
                 <ToastAutoHide message={mensaje} />
                 {/* Contenedor principal */}
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
                         {/* Título del módulo */}
-                        <Typography variant="h5">Modulo de Proveedores Productos</Typography>
+                        <Typography variant="h5">Panel de Control de Proveedores Productos de Car Wash</Typography>
                     </Box>
                     {/* Botón para agregar un nuevo proveedor */}
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
-                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Agregar Proveedor de productos</Button>
+                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Registrar Proveedor de Productos</Button>
                         </Grid>
 
 

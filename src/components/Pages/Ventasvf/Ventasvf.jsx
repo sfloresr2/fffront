@@ -3,10 +3,12 @@ import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, 
 import ApiRequest from '../../../helpers/axiosInstances';
 import Page from '../../common/Page';
 import ToastAutoHide from '../../common/ToastAutoHide';
+
+
+
 //ventas
 const Ventasvf = () => {
     const initialState = {
-    
             id: "",	
             codigo:"",
             placa:"",
@@ -24,30 +26,33 @@ const Ventasvf = () => {
             motor:"",
             cilindros:"",
             c_c:"",	
-            
             id_clientes: "",
             fecha_venta: "",	
             precio_compra: "",	
             precio_venta: ""	
     };
 
+
+
     // Modificación para evitar desfase por zona horaria
     const formatDate = (date) => {
         if (!date) return '';
         const d = new Date(date);
-
         // Ajustar la fecha sumando horas para evitar el desfase por la zona horaria
         d.setHours(d.getHours() + 12);  // Sumar 12 horas para asegurar el día correcto
-
         const month = ('0' + (d.getMonth() + 1)).slice(-2);
         const day = ('0' + d.getDate()).slice(-2);
         return d.getFullYear() + '-' + month + '-' + day;
     };
 
+
+
     const [roles, setRoles] = useState([]);
     const [body, setBody] = useState(initialState);
     const [isEdit, setIsEdit] = useState(false);
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
+
+
 
     const fetchRoles = async () => {
         try {
@@ -58,6 +63,8 @@ const Ventasvf = () => {
         }
     };
 
+
+
     const onChange = ({ target }) => {
         const { name, value } = target;
         setBody({
@@ -65,6 +72,8 @@ const Ventasvf = () => {
             [name]: value
         });
     };
+
+
 
     const onSubmit = async () => {
         try {
@@ -85,6 +94,8 @@ const Ventasvf = () => {
         }
     };
 
+
+
     const onEdit = async () => {
         try {
             const { data } = await ApiRequest().post('/editar_vehicv', body);
@@ -104,16 +115,20 @@ const Ventasvf = () => {
         }
     };
 
+
+
     useEffect(() => {
         fetchRoles();
     }, []);
 
+
+
     return (
-        <Page title="FF | Compras Vehiculos">
+        <Page title="FF | Ventas Vehiculos">
             <ToastAutoHide message={mensaje} />
             <Container maxWidth='lg'>
                 <Box sx={{ pb: 5 }}>
-                    <Typography variant="h5">Modulo {isEdit ? 'Editar Vehiculo' : 'Compras de Vehiculos'}</Typography>
+                    <Typography variant="h5">Módulo de Registro de Información de  {isEdit ? 'Editar Vehiculo' : 'Ventas de Vehiculo'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
 
@@ -406,15 +421,10 @@ const Ventasvf = () => {
                         />
                     </Grid>
 
-
-
-
-                
-                   
                     
                     <Grid item xs={12}>
                         <Button variant='contained' color='primary' onClick={isEdit ? onEdit : onSubmit}>
-                            {isEdit ? 'Editar Venta' : 'Realizar Venta'}
+                            {isEdit ? 'Editar Venta' : 'Registrar Venta de Vehiculo'}
                         </Button>
                     </Grid>
                 </Grid>

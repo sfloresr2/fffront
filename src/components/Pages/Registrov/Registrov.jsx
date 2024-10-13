@@ -286,7 +286,7 @@ const Registrov = () => {
         doc.text("Reporte de Inventario Vehiculo", 20, 10);// Añade un título al PDF en la posición (20, 10).
         doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
              // Define la cabecera de la tabla con los nombres de los campos.
-            head: [['id', 'placa', 'tipo_vehiculo', 'marca', 'modelo', 'color', 'uso', 'linea', 'chasis', 'serie', 'numero_asientos', 'ejes', 'numero_vin', 'motor', 'cilindros', 'c_c', 'id_proveedor_vehiculo', 'fecha_compra', 'precio_compra', 'precio_vehiculo']],
+            head: [['id', 'placa', 'tipo_vehiculo', 'marca', 'modelo', 'color', 'uso', 'linea', 'chasis', 'serie', 'numero_asientos', 'ejes', 'numero_vin', 'motor', 'cilindros', 'c_c', 'id_clientes', 'fecha_venta', 'precio_compra', 'precio_venta']],
            // El cuerpo de la tabla se llena con los datos de la lista de vehículos (usuariosList).
             body: usuariosList.map(product => [
                 product.id,
@@ -305,7 +305,7 @@ const Registrov = () => {
                 product.motor,
                 product.cilindros,
                 product.c_c,
-                product.nombre_proveedor_vehiculo,
+                product.nombre_clientes,
                 formatDate(product.fecha_venta), // Formatea la fecha de compra antes de agregarla a la tabla.
                 product.precio_compra, 
                 product.precio_venta,     
@@ -448,18 +448,18 @@ const generatePDFAutowini = () => {
     return (
         <>
             <Dialog maxWidth='xs' open={openDialogDelete} onClose={handleDialogDelete}>
-                <DialogTitle>¿Eliminar Vehiculo?</DialogTitle>
+                <DialogTitle>¿Está seguro de que desea eliminar al usuario?</DialogTitle>
                 <DialogContent>
                     <Typography variant='h5'>Esta acción no se puede deshacer</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Cancelar</Button>
-                    <Button variant='contained' color='primary' onClick={onDelete}>Aceptar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
+                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Elminacion</Button>
                 </DialogActions>
             </Dialog>
             
             <Dialog maxWidth='xs' open={openDialog} onClose={handleDialog}>
-                <DialogTitle>{isEdit ? 'Formulario Editar Vehiculo' : 'Formulario Crear Vehiculo'}</DialogTitle>
+                <DialogTitle>{isEdit ? 'Formulario de Edicion Vehiculo Vendido' : 'Formulario de Registro de Venta de Vehiculo'}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
 
@@ -797,7 +797,7 @@ const generatePDFAutowini = () => {
 
 
                         <Grid item xs={12} sm={3}>
-                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Reporte Todos Los Vehiculos</Button>
+                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Vehiculos Vendidos</Button>
                         </Grid>
                         {/*
                         <Grid item xs={12} sm={3}>
@@ -809,12 +809,15 @@ const generatePDFAutowini = () => {
 */
 }
 
+{/*
 <Grid item xs={12} sm={3}>
     <Button onClick={generatePDFIAA} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>Reporte IAA</Button>
 </Grid>
 <Grid item xs={12} sm={3}>
     <Button onClick={generatePDFAutowini} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>Reporte Autowini</Button>
 </Grid>
+
+*/}
 
 
 

@@ -290,7 +290,7 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
             {/* Dialog para confirmar la eliminación de un producto */}
             <Dialog maxWidth='xs' open={openDialogDelete} onClose={handleDialogDelete}>
                  {/* Título del diálogo */}
-                <DialogTitle>¿Eliminar Producto?</DialogTitle>
+                <DialogTitle>¿Está seguro de que desea eliminar el producto?</DialogTitle>
                 {/* Contenido del diálogo con un mensaje informativo */}
                 <DialogContent>
                     <Typography variant='h5'>Esta acción no se puede deshacer</Typography>
@@ -298,16 +298,16 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
                 {/* Botones para cancelar o aceptar la eliminación */}
                 <DialogActions>
                     {/* Botón para cancelar la operación */}
-                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Cancelar</Button>
+                    <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
                     {/* Botón para confirmar la eliminación */}
-                    <Button variant='contained' color='primary' onClick={onDelete}>Aceptar</Button>
+                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Eliminacion</Button>
                 </DialogActions>
             </Dialog>
 
             
             <Dialog maxWidth='xs' open={openDialog} onClose={handleDialog}>
                 {/* Título dinámico que cambia dependiendo de si es edición o creación */}
-                <DialogTitle>{isEdit ? 'Formulario Editar Producto' : 'Formulario Crear Producto'}</DialogTitle>
+                <DialogTitle>{isEdit ? 'Formulario de Edicion de Producto' : 'Formulario de Registro de Productos'}</DialogTitle>
 
 
                 <DialogContent>
@@ -442,7 +442,7 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
                     {/* Botón para enviar el formulario: edit o agregar dependiendo del estado */}
                     <Button variant='contained' color='primary' onClick={isEdit ? onEdit : onSubmit}>
                         {/* Muestra el texto según el estado 'isEdit' */}
-                        {isEdit ? 'Editar Producto' : 'Agregar Producto'}
+                        {isEdit ? 'Editar Producto' : 'Registrar Producto'}
                     </Button>
                 </DialogActions>
 
@@ -459,7 +459,7 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
                     {/* Box que aplica un padding-bottom (pb) de 5 unidades */}
                     <Box sx={{ pb: 5 }}>
                         {/* Título principal del módulo de inventario */}
-                        <Typography variant="h5">Modulo de Inventario Car Wash</Typography>
+                        <Typography variant="h5">Inventario del Car Wash</Typography>
                     </Box>
 
 
@@ -480,15 +480,15 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
 
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF general de inventario */}
-                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Generar Reporte PDF</Button>
+                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos</Button>
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF de productos "QuimicosDeLaEra" */}
-                            <Button onClick={generatePDFQuimicosDeLaEra} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Reporte QuimicosDeLaEra</Button>
+                            <Button onClick={generatePDFQuimicosDeLaEra} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de QuimicosDeLaEra</Button>
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF de productos "Quimicos FERKICA" */}
-                            <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Reporte Quimicos FERKICA</Button>
+                            <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de Quimicos FERKICA</Button>
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             {/* Componente para mostrar la tabla con los datos de los productos */}

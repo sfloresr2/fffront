@@ -4,9 +4,10 @@ import ApiRequest from '../../../helpers/axiosInstances';
 import Page from '../../common/Page';
 import ToastAutoHide from '../../common/ToastAutoHide';
 
+
+
 const Vehiculos = () => {
     const initialState = {
-    
             id: "",	
             codigo: "",
             placa:"",
@@ -24,30 +25,33 @@ const Vehiculos = () => {
             motor:"",
             cilindros:"",
             c_c:"",	
-            
             id_proveedor_vehiculo: "",
             fecha_compra: "",	
             precio_compra: "",	
             precio_vehiculo: ""	
     };
 
+
+
     // Modificación para evitar desfase por zona horaria
     const formatDate = (date) => {
         if (!date) return '';
         const d = new Date(date);
-
         // Ajustar la fecha sumando horas para evitar el desfase por la zona horaria
         d.setHours(d.getHours() + 12);  // Sumar 12 horas para asegurar el día correcto
-
         const month = ('0' + (d.getMonth() + 1)).slice(-2);
         const day = ('0' + d.getDate()).slice(-2);
         return d.getFullYear() + '-' + month + '-' + day;
     };
 
+
+
     const [roles, setRoles] = useState([]);
     const [body, setBody] = useState(initialState);
     const [isEdit, setIsEdit] = useState(false);
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
+
+
 
     const fetchRoles = async () => {
         try {
@@ -58,6 +62,8 @@ const Vehiculos = () => {
         }
     };
 
+
+
     const onChange = ({ target }) => {
         const { name, value } = target;
         setBody({
@@ -65,6 +71,8 @@ const Vehiculos = () => {
             [name]: value
         });
     };
+
+
 
     const onSubmit = async () => {
         try {
@@ -84,6 +92,8 @@ const Vehiculos = () => {
             });
         }
     };
+
+
 
     //funcion editar vehiculo
     const onEdit = async () => {
@@ -105,16 +115,20 @@ const Vehiculos = () => {
         }
     };
 
+
+
     useEffect(() => {
         fetchRoles();
     }, []);
+
+
 
     return (
         <Page title="FF | Compras Vehiculos">
             <ToastAutoHide message={mensaje} />
             <Container maxWidth='lg'>
                 <Box sx={{ pb: 5 }}>
-                    <Typography variant="h5">Modulo {isEdit ? 'Editar Vehiculo' : 'Compras de Vehiculos'}</Typography>
+                    <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Vehiculo' : 'Compras de Vehiculos'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
 
@@ -405,15 +419,10 @@ const Vehiculos = () => {
                         />
                     </Grid>
 
-
-
-
-                
-                   
                     
                     <Grid item xs={12}>
                         <Button variant='contained' color='primary' onClick={isEdit ? onEdit : onSubmit}>
-                            {isEdit ? 'Editar Producto' : 'Crear Producto'}
+                            {isEdit ? 'Editar Vehiculo' : 'Registrar Vehiculo'}
                         </Button>
                     </Grid>
                 </Grid>
