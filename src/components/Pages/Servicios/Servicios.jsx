@@ -33,7 +33,7 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
 
     
     const init = async () => {// Función asíncrona llamada 'init' para inicializar el componente
-        const { data } = await ApiRequest().get('/proveedoresvvv');// Espera (await) el resultado de una solicitud HTTP GET a la API usando Axios.La solicitud se hace a la ruta '/proveedoresvvv' (probablemente para obtener una lista de proveedores)
+        const { data } = await ApiRequest().get('/serviciosc');// Espera (await) el resultado de una solicitud HTTP GET a la API usando Axios.La solicitud se hace a la ruta '/proveedoresvvv' (probablemente para obtener una lista de proveedores)
         setUsuariosList(data);// Actualiza el estado 'usuariosList' con los datos obtenidos de la respuesta de la API
     };
 
@@ -76,7 +76,7 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
 
     const onDelete = async () => {// Función asíncrona llamada 'onDelete' que maneja la eliminación de un proveedor
         try {
-            const { data } = await ApiRequest().post('/eliminar_proveedorimpo', { id: idDelete });// Envía una solicitud POST a la API para eliminar un proveedor usando su ID
+            const { data } = await ApiRequest().post('/eliminar_serviciosc', { id: idDelete });// Envía una solicitud POST a la API para eliminar un proveedor usando su ID
             setMensaje({ // Actualiza el estado 'mensaje' con la respuesta exitosa de la API
                 ident: new Date().getTime(),// Genera un identificador único basado en la hora actual
                 message: data.message,// Mensaje de éxito devuelto por la API
@@ -119,7 +119,7 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
 
     const onSubmit = async () => {// Función asíncrona llamada 'onSubmit' que maneja el envío del formulario
         try {
-            const { data } = await ApiRequest().post('/guardar_proveedorimpo', body); // Envía una solicitud POST a la API para guardar un nuevo proveedor con los datos del cuerpo del formulario
+            const { data } = await ApiRequest().post('/guardar_serviciosc', body); // Envía una solicitud POST a la API para guardar un nuevo proveedor con los datos del cuerpo del formulario
             handleDialog();// Cierra el cuadro de diálogo de edición
             setBody(initialState);// Restablece el cuerpo del formulario a su estado inicial
             setMensaje({// Actualiza el estado 'mensaje' con la respuesta exitosa de la API
@@ -142,7 +142,7 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
 
     const onEdit = async () => {// Función asíncrona llamada 'onEdit' que maneja la edición de un proveedor
         try {
-            const { data } = await ApiRequest().post('/editar_proveedorimpo', body);// Envía una solicitud POST a la API para editar un proveedor con los datos del cuerpo del formulario
+            const { data } = await ApiRequest().post('/editar_serviciosc', body);// Envía una solicitud POST a la API para editar un proveedor con los datos del cuerpo del formulario
             handleDialog();// Cierra el cuadro de diálogo de edición
             setBody(initialState);// Restablece el cuerpo del formulario a su estado inicial
             setMensaje({// Actualiza el estado 'mensaje' con la respuesta exitosa de la API
@@ -324,22 +324,22 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
                      {/* Botón para cancelar la acción de edición o creación */}
                     <Button variant='text' color='primary' onClick={handleDialog}>Anular Registro</Button>
                     {/* Botón para guardar el proveedor, que llama a onEdit o onSubmit dependiendo del estado */}
-                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Registrar Proveedor de Vehiculos</Button>
+                    <Button variant='contained' color='primary' onClick={isEdit ? () => onEdit() : () => onSubmit()}>Registrar Servicios de Car Wash</Button>
                 </DialogActions>
             </Dialog>
 
 
             {/* Componente de la página principal con un título */}
-            <Page title="FF| Proveedor de Vehiculos">
+            <Page title="FF| Servicios de Car Wash">
                 <ToastAutoHide message={mensaje} />{/* Componente para mostrar mensajes temporales */}
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Panel de Control de Proveedores de Vehiculos</Typography>
+                        <Typography variant="h5">Panel de Control de Servicios Car Wash</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
                              {/* Botón para agregar un nuevo proveedor */}
-                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Registrar Proveedor de Vehiculo</Button>
+                            <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Registrar Servicio de Car Wash</Button>
                         </Grid>
 
 
