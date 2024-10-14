@@ -39,6 +39,12 @@ const sidebarConfig = [
 	},
 
 	{
+		title: 'Servicios de Car Wash',
+		path: '/app/servicios',
+		icon: <LocalCarWashOutlined /> // Cambiado a un icono de inventario
+	},
+
+	{
 		title: 'Venta de Servicios',
 		path: '/app/ventassf',
 		icon: <MonetizationOnOutlined /> // Cambiado a un icono de inventario

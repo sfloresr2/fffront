@@ -17,6 +17,7 @@ const Ventasvf = lazy(() => import('../components/Pages/Ventasvf'))
 const Registrov = lazy(() => import('../components/Pages/Registrov'))
 const Clientes = lazy(() => import('../components/Pages/Clientes'))
 const Facturas = lazy(() => import('../components/Pages/Facturas'))
+const Servicios = lazy(() => import('../components/Pages/Servicios'))
 
 const routes = [
 	{
@@ -112,9 +113,12 @@ const routes = [
 				exact: true,
 				render: props => <RouteController component={Facturas} {...props} />
 			},
+			{
+				path: `/${APP_VALUES.ROOT_ROUTE}/servicios`,
+				exact: true,
+				render: props => <RouteController component={Servicios} {...props} />
+			},
 			
-
-
 
 			{
 				path: `/${APP_VALUES.ROOT_ROUTE}/*`,
