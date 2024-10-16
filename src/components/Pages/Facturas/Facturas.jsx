@@ -158,7 +158,7 @@ const Facturas = () => {
         Object.keys(facturasAgrupadas).forEach(numeroFactura => {
             const facturas = facturasAgrupadas[numeroFactura];
             const doc = new jsPDF();
-            doc.text(`Factura No: ${numeroFactura}`, 20, 10);
+            doc.text(`Recibo No: ${numeroFactura}`, 20, 10);
 
             // Generar tabla de productos
             doc.autoTable({
@@ -184,7 +184,7 @@ const Facturas = () => {
             });
 
             // Guardar el PDF con el número de factura en el nombre
-            doc.save(`factura_${numeroFactura}.pdf`);
+            doc.save(`Recibo_${numeroFactura}.pdf`);
         });
     };
 
@@ -358,18 +358,18 @@ const Facturas = () => {
                 <ToastAutoHide message={mensaje} />
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Panel de Control de Facturas</Typography>
+                        <Typography variant="h5">Panel de Control de Recibos</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
                             <Button onClick={() => { setIsEdit(false); handleDialog(); setBody(initialState); }} startIcon={<AddOutlined />} variant='contained' color='primary'>
-                                Registrar Factura
+                                Registrar Recibo
                             </Button>
                         </Grid>
 
                         <Grid item xs={12} sm={3}>
                             <Button onClick={handleGenerateFacturasReport} startIcon={<PictureAsPdfOutlined />} variant='contained' style={{ backgroundColor: '#002244', color: 'white' }}>
-                                Generar Facturas
+                                Generar Recibos
                             </Button>
                         </Grid>
 

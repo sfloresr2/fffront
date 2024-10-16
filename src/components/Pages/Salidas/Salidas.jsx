@@ -6,14 +6,14 @@ import ToastAutoHide from '../../common/ToastAutoHide'; // Importa un componente
 
 
 
-const Productos = () => { // Definición del componente funcional "Productos".
+const Salidas = () => { // Definición del componente funcional "Productos".
     const initialState = { // Estado inicial para un producto, probablemente usado para manejar formularios de creación o edición.
         id: "", // ID del producto (vacío por defecto).
         codigo: "",
         nombre: "", // Nombre del producto.
         descripcion: "", // Descripción del producto.
         id_proveedor: "", // ID del proveedor del producto.
-        fecha_compra: "", // Fecha de compra (inicialmente vacía, sin una fecha predefinida). 
+        fecha_salida: "", // Fecha de compra (inicialmente vacía, sin una fecha predefinida). 
         
         cantidad: "", // Cantidad de productos.
         precio: "" // Precio del producto.   
@@ -62,7 +62,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
 
     const onSubmit = async () => { // "onSubmit" es una función asíncrona que se ejecuta cuando el formulario es enviado.Se encargará de enviar los datos del formulario (almacenados en "body") al servidor.
         try { // Intenta ejecutar el bloque de código en el "try". Si ocurre algún error, se manejará en el "catch".
-            const { data } = await ApiRequest().post('/guardar_product', body); // Realiza una solicitud HTTP POST a la API en el endpoint '/guardar_product' utilizando "ApiRequest".Se envía el contenido de "body" (que contiene los datos del producto) como el cuerpo de la solicitud.La respuesta se desestructura para obtener "data", que contiene el resultado de la operación en la API.
+            const { data } = await ApiRequest().post('/guardar_products', body); // Realiza una solicitud HTTP POST a la API en el endpoint '/guardar_product' utilizando "ApiRequest".Se envía el contenido de "body" (que contiene los datos del producto) como el cuerpo de la solicitud.La respuesta se desestructura para obtener "data", que contiene el resultado de la operación en la API.
             setMensaje({   // Establece un mensaje en el estado "mensaje", indicando que la operación fue exitosa,mostrando al usuario un mensaje que viene desde la API.
                 ident: new Date().getTime(),// Genera un identificador único para el mensaje (en este caso, la marca de tiempo actual).
                 message: data.message,// Toma el mensaje de éxito que retorna la API en la respuesta y lo almacena.
@@ -83,7 +83,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
  
     const onEdit = async () => { //"onEdit" es una función asíncrona que se ejecuta cuando se desea editar un producto existente.Envía los datos del formulario (almacenados en "body") al servidor para actualizar el producto.
         try { // Intenta ejecutar el código dentro del bloque "try". Si ocurre algún error, se manejará en el "catch".
-            const { data } = await ApiRequest().post('/editar_product', body);  // Hace una solicitud HTTP POST a la API en el endpoint '/editar_product' utilizando "ApiRequest".Se envía el contenido de "body" (que contiene los datos del producto editado) como el cuerpo de la solicitud.La respuesta de la solicitud se desestructura para obtener "data", que contiene el resultado de la operación.
+            const { data } = await ApiRequest().post('/editar_products', body);  // Hace una solicitud HTTP POST a la API en el endpoint '/editar_product' utilizando "ApiRequest".Se envía el contenido de "body" (que contiene los datos del producto editado) como el cuerpo de la solicitud.La respuesta de la solicitud se desestructura para obtener "data", que contiene el resultado de la operación.
             setMensaje({  // Establece un mensaje en el estado "mensaje" para mostrar que la operación de edición fue exitosa.
                 ident: new Date().getTime(), // Genera un identificador único para el mensaje (basado en la marca de tiempo actual).
                 message: data.message, // Usa el mensaje de éxito que retorna la API en la respuesta.
@@ -109,7 +109,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
 
 
     return ( // El retorno del componente, que define la estructura de la interfaz de usuario.
-        <Page title="FF | Compra de Producto"> {/* Componente "Page" que envuelve todo y establece el título de la página en la pestaña del navegador. */}
+        <Page title="FF | Salidas de Producto"> {/* Componente "Page" que envuelve todo y establece el título de la página en la pestaña del navegador. */}
             <ToastAutoHide message={mensaje} /> {/* Componente que muestra un mensaje de notificación (toast) que se oculta automáticamente.Recibe el estado "mensaje" que contiene la información sobre el mensaje a mostrar. */}
             <Container maxWidth='lg'> {/* Componente "Container" que limita el ancho máximo del contenido a 'lg' (grande) para un diseño responsivo. */}
                 <Box sx={{ pb: 5 }}>  {/* Componente "Box" que aplica un margen inferior (padding bottom) de 5 unidades. */}
@@ -211,13 +211,13 @@ const Productos = () => { // Definición del componente funcional "Productos".
                         <TextField
                             type='date' // Define que este campo es un selector de fecha, permitiendo al usuario elegir una fecha desde un calendario.
                             margin='normal'// Aplica un margen normal al campo, mejorando el espaciado visual.
-                            name='fecha_compra'// Asigna un nombre al campo, utilizado para identificar la fecha de compra en el estado.
-                            value={formatDate(body.fecha_compra)} 
+                            name='fecha_salida'// Asigna un nombre al campo, utilizado para identificar la fecha de compra en el estado.
+                            value={formatDate(body.fecha_salida)} 
                             onChange={onChange} 
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Fecha Compra'
+                            label='Fecha Salida'
                             InputLabelProps={{
                                 shrink: true, /* Propiedad que indica que la etiqueta debe mantenerse encogida incluso cuando el campo tiene un valor, para que el diseño sea más limpio y legible. */
                             }}
@@ -268,4 +268,4 @@ const Productos = () => { // Definición del componente funcional "Productos".
     );// Fin del Return
 };// Fin del Cost Productos
 
-export default Productos; // Exporta el componente "Productos" para que pueda ser utilizado en otros archivos.
+export default Salidas; // Exporta el componente "Productos" para que pueda ser utilizado en otros archivos.

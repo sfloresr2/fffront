@@ -21,21 +21,32 @@ const sidebarConfig = [
 	},
 
 	{
-		title: 'Facturas',
+		title: 'Compras Productos',
 		path: '/app/facturas',
 		icon: <ReceiptOutlined /> // Cambiado a un icono de inventario
 	},
 
 	{
-		title: 'Compras Productos',
+		title: 'Entrada Productos',
 		path: '/app/productos',
 		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
 	},
 
+	
 	{
 		title: 'Inventario Car Wash',
 		path: '/app/inventario',
 		icon: <SanitizerOutlined /> // Cambiado a un icono de inventario
+	},
+	{
+		title: 'Salida Productos',
+		path: '/app/salidas',
+		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+	},
+	{
+		title: 'Registro Salidas',
+		path: '/app/salidasre',
+		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
 	},
 
 	{

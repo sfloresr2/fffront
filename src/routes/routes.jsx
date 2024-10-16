@@ -18,6 +18,9 @@ const Registrov = lazy(() => import('../components/Pages/Registrov'))
 const Clientes = lazy(() => import('../components/Pages/Clientes'))
 const Facturas = lazy(() => import('../components/Pages/Facturas'))
 const Servicios = lazy(() => import('../components/Pages/Servicios'))
+const Salidas = lazy(() => import('../components/Pages/Salidas'))
+const Salidasre = lazy(() => import('../components/Pages/Salidasre'))
+
 
 const routes = [
 	{
@@ -119,6 +122,19 @@ const routes = [
 				render: props => <RouteController component={Servicios} {...props} />
 			},
 			
+			{
+				path: `/${APP_VALUES.ROOT_ROUTE}/salidas`,
+				exact: true,
+				render: props => <RouteController component={Salidas} {...props} />
+			},
+
+			{
+				path: `/${APP_VALUES.ROOT_ROUTE}/salidasre`,
+				exact: true,
+				render: props => <RouteController component={Salidasre} {...props} />
+			},
+
+
 
 			{
 				path: `/${APP_VALUES.ROOT_ROUTE}/*`,
