@@ -113,7 +113,7 @@ const Salidas = () => { // Definición del componente funcional "Productos".
             <ToastAutoHide message={mensaje} /> {/* Componente que muestra un mensaje de notificación (toast) que se oculta automáticamente.Recibe el estado "mensaje" que contiene la información sobre el mensaje a mostrar. */}
             <Container maxWidth='lg'> {/* Componente "Container" que limita el ancho máximo del contenido a 'lg' (grande) para un diseño responsivo. */}
                 <Box sx={{ pb: 5 }}>  {/* Componente "Box" que aplica un margen inferior (padding bottom) de 5 unidades. */}
-                    <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Producto' : 'Compras de Producto'}</Typography> {/* Componente "Typography" que se utiliza para mostrar texto con estilos tipográficos. */}  {/* Texto que indica si el formulario está en modo de edición o en modo de compras. Utiliza un operador ternario para mostrar "Editar Producto" si "isEdit" es true, de lo contrario, muestra "Compras de Producto". */}
+                    <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Producto' : 'Salida de Producto'}</Typography> {/* Componente "Typography" que se utiliza para mostrar texto con estilos tipográficos. */}  {/* Texto que indica si el formulario está en modo de edición o en modo de compras. Utiliza un operador ternario para mostrar "Editar Producto" si "isEdit" es true, de lo contrario, muestra "Compras de Producto". */}
                 </Box>{/* Fin del Box*/}
                 <Grid container spacing={2}>  {/* Componente "Grid" que actúa como un contenedor para organizar los elementos en una cuadrícula."spacing={2}" añade espacio entre los elementos de la cuadrícula. */}
 
@@ -239,18 +239,7 @@ const Salidas = () => { // Definición del componente funcional "Productos".
                         />{/* Fin del Textfield */}
                     </Grid>{/* Fin del Grid */}
 
-                    <Grid item xs={12} sm={6}>{/* Un elemento de la cuadrícula que ocupa todo el ancho (12 columnas) en pantallas pequeñas (xs) y la mitad del ancho (6 columnas) en pantallas medianas (sm). */}
-                        <TextField
-                            margin='normal' // Aplica un margen normal al campo, mejorando el espaciado visual.
-                            name='precio' // Asigna un nombre al campo, que será utilizado para identificar el precio en el estado.
-                            value={body.precio} // Vincula el campo al valor "precio" en el estado "body", permitiendo que el campo muestre el precio actual.
-                            onChange={onChange}// Maneja el evento de cambio del campo, llamando a la función "onChange" para actualizar el estado cuando el usuario modifica el precio.
-                            variant='outlined'// Estilo del campo con borde, proporcionando una apariencia más definida y agradable visualmente.
-                            size='small' // Tamaño del campo, que es pequeño, haciéndolo más compacto y fácil de usar.
-                            fullWidth // Hace que el campo ocupe todo el ancho disponible del contenedor, asegurando una mejor experiencia de usuario.
-                            label='Precio' // Etiqueta que se muestra en el campo, indicando al usuario que debe ingresar el precio del producto.
-                        />{/* Fin del Textfield */}
-                    </Grid> {/* Fin del Grid */}
+         
                     
                     <Grid item xs={12}> {/* Un elemento de la cuadrícula que ocupa todo el ancho (12 columnas) en pantallas pequeñas y medianas. */}
                         <Button 

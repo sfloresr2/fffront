@@ -86,8 +86,32 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
         },//Fin del field de fecha de compra
         
         { field: 'cantidad', headerName: 'Cantidad', width: 220 },// Columna para mostrar la cantidad de productos comprados
-        { field: 'precio', headerName: 'Precio', width: 220 },// Columna para mostrar el precio del producto
-        { field: 'subtotal', headerName: 'Subtotal', width: 220 },// Columna para mostrar el subtotal (precio * cantidad)
+
+        {
+            field: 'precio',
+            headerName: 'Precio',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+        },
+
+        {
+            field: 'total',
+            headerName: 'Total',
+            width: 220,
+            renderCell: (params) => {
+                const cantidad = parseFloat(params.row.cantidad);
+                const precio = parseFloat(params.row.precio);
+                const total = cantidad * precio;
+        
+                // Formatear el total a dos decimales
+                return `Q. ${total.toFixed(2)}`;
+            }
+        },
+
+
+
+
+
         // Columna para mostrar las acciones (editar y eliminar) para cada fila de la tabla
         {
             field: '',
@@ -425,21 +449,31 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
                             />
                         </Grid>
 
-
                         <Grid item xs={12}>
-                            {/* Grid item para el campo de precio */}
-                            <TextField
-                                margin='normal'// Aplica un margen estándar alrededor del campo de texto
-                                name='precio'// Asocia el campo con el nombre "precio" en el estado
-                                value={body.precio}// Muestra el valor actual del precio desde el estado 'body.precio'
-                                onChange={onChange}// Llama a la función onChange para actualizar el estado cuando el usuario introduce un precio
-                                variant='outlined'// Estilo del campo con borde contorneado
-                                size='small' // Tamaño del campo (pequeño)
-                                color='primary'// Color del campo utilizando el esquema de colores 'primary'
-                                fullWidth// Hace que el campo ocupe todo el ancho disponible en su contenedor
-                                label='Precio'// Etiqueta que se muestra en el campo
-                            />
-                        </Grid>
+    <TextField
+        margin='normal'
+        name='precio'
+        value={body.precio}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        fullWidth
+        label='Precio'
+        InputProps={{
+            startAdornment: <Typography>Q.</Typography>
+        }}
+    />
+</Grid>
+
+
+
+
+
+
+
+
+
+                        
                     </Grid>
                 </DialogContent>
 

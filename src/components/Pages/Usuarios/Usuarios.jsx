@@ -374,9 +374,14 @@ const Usuarios = () => {
                         <Grid item xs={12} sm={3}>
                             <Button onClick={handleGenerateAdminUsersReport} startIcon={<PictureAsPdfOutlined />} variant='contained' style={{ backgroundColor: '#002244', color: 'white' }}> Informe de Administradores</Button>
                         </Grid>
+                        
+                        {/*
                         <Grid item xs={12} sm={3}>
                             <Button onClick={handleGenerateUserUsersReport} startIcon={<PictureAsPdfOutlined />} variant='contained' style={{ backgroundColor: '#002244', color: 'white' }}> Informe de Usuarios Estandar</Button>
                         </Grid>
+                        */}
+
+
                         <Grid item xs={12} sm={12}>
                             <CommonTable data={usuariosList} columns={columns} />
                         </Grid>

@@ -67,11 +67,18 @@ const Facturas = () => {
 
     const onChange = ({ target }) => {
         const { name, value } = target;
-        setBody({
-            ...body,
-            [name]: value
-        });
+        const updatedBody = { ...body, [name]: value };
+    
+        // Si el campo editado es el precio, recalcular el total
+        if (name === 'precio') {
+            const cantidad = parseFloat(updatedBody.cantidad || 0);
+            const nuevoPrecio = parseFloat(value || 0);
+            updatedBody.total = (cantidad * nuevoPrecio).toFixed(2); // Calcular nuevo total
+        }
+    
+        setBody(updatedBody);
     };
+    
 
 
 
@@ -153,40 +160,56 @@ const Facturas = () => {
         }, {});
     };
 
-    // Función para generar PDF de cada grupo de facturas
+
+
+
+
+
     const generarPDFPorFacturas = (facturasAgrupadas) => {
         Object.keys(facturasAgrupadas).forEach(numeroFactura => {
             const facturas = facturasAgrupadas[numeroFactura];
             const doc = new jsPDF();
             doc.text(`Recibo No: ${numeroFactura}`, 20, 10);
-
-            // Generar tabla de productos
+    
+            // Generar tabla de productos con el símbolo de Quetzal
             doc.autoTable({
-                head: [['ID', 'Producto', 'Cantidad', 'Precio', 'Total']],
+                head: [['ID', 'Producto', 'Cantidad', 'Precio (Q)', 'Total (Q)']],
                 body: facturas.map(factura => [
                     factura.id,
                     factura.producto,
                     factura.cantidad,
-                    factura.precio,
-                    factura.total
+                    `Q. ${parseFloat(factura.precio).toFixed(2)}`, // Añadir símbolo de Quetzal
+                    `Q. ${parseFloat(factura.total).toFixed(2)}`  // Añadir símbolo de Quetzal
                 ])
             });
-
+    
             // Calcular el total general de la factura
             const totalGeneral = facturas.reduce((sum, factura) => sum + parseFloat(factura.total), 0);
-
-            // Agregar el total general al final de la tabla
+    
+            // Agregar el total general al final de la tabla con símbolo de Quetzal
             doc.autoTable({
                 body: [
-                    [{ content: 'Total General', colSpan: 4, styles: { halign: 'right' } }, totalGeneral]
+                    [{ content: 'Total General', colSpan: 4, styles: { halign: 'right' } }, `Q. ${totalGeneral.toFixed(2)}`]
                 ],
                 theme: 'plain'
             });
-
+    
             // Guardar el PDF con el número de factura en el nombre
             doc.save(`Recibo_${numeroFactura}.pdf`);
         });
     };
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -209,11 +232,51 @@ const Facturas = () => {
         { field: 'id', headerName: 'ID', width: 120 },
         { field: 'nombre_proveedor', headerName: 'Proveedor', width: 220 },
         { field: 'numero_factura', headerName: 'Numero de Factura', width: 220 },
-        { field: 'fecha_factura', headerName: 'Fecha', width: 220 },
+
+
+        {
+            field: 'fecha_factura',
+            headerName: 'Fecha',
+            width: 220,
+            renderCell: (params) => {
+                const date = new Date(params.value);
+                return date.toLocaleDateString(); // Muestra solo la fecha en formato local
+            }
+        },
+
+
+
         { field: 'producto', headerName: 'Producto', width: 220 },
         { field: 'cantidad', headerName: 'Cantidad', width: 220 },
-        { field: 'precio', headerName: 'Precio', width: 220 },
-        { field: 'total', headerName: 'Total', width: 220 },
+
+        {
+            field: 'precio',
+            headerName: 'Precio',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+        },
+
+        {
+            field: 'total',
+            headerName: 'Total',
+            width: 220,
+            renderCell: (params) => {
+                const cantidad = parseFloat(params.row.cantidad);
+                const precio = parseFloat(params.row.precio);
+                const total = cantidad * precio;
+        
+                // Formatear el total a dos decimales
+                return `Q. ${total.toFixed(2)}`;
+            }
+        },
+        
+
+
+
+        
+
+
+
         {
             field: '',
             headerName: 'Acciones',
@@ -244,7 +307,7 @@ const Facturas = () => {
         <>
             <Dialog maxWidth='xs' open={openDialogDelete} onClose={handleDialogDelete}>
                 <DialogTitle>
-                    ¿Está seguro de que desea eliminar esta factura?
+                    ¿Está seguro de que desea eliminar esta compra?
                 </DialogTitle>
                 <DialogActions>
                     <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
@@ -254,7 +317,7 @@ const Facturas = () => {
 
             <Dialog maxWidth='xs' open={openDialog} onClose={handleDialog}>
                 <DialogTitle>
-                    {isEdit ? 'Editar Factura' : 'Registrar Factura'}
+                    {isEdit ? 'Editar compra' : 'Registrar compra'}
                 </DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
@@ -333,17 +396,28 @@ const Facturas = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <TextField
-                                margin='normal'
-                                name='precio'
-                                value={body.precio}
-                                onChange={onChange}
-                                variant='outlined'
-                                size='small'
-                                fullWidth
-                                label='Precio'
-                            />
-                        </Grid>
+    <TextField
+        margin='normal'
+        name='precio'
+        value={body.precio}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        fullWidth
+        label='Precio'
+        InputProps={{
+            startAdornment: <Typography>Q.</Typography>
+        }}
+    />
+</Grid>
+
+
+
+
+
+
+
+
                     </Grid>
                 </DialogContent>
                 <DialogActions>
@@ -354,16 +428,16 @@ const Facturas = () => {
                 </DialogActions>
             </Dialog>
 
-            <Page title="FF | Facturas Car Wash">
+            <Page title="FF | Compras Productos">
                 <ToastAutoHide message={mensaje} />
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Panel de Control de Recibos</Typography>
+                        <Typography variant="h5">Panel de Control de Compras</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
                             <Button onClick={() => { setIsEdit(false); handleDialog(); setBody(initialState); }} startIcon={<AddOutlined />} variant='contained' color='primary'>
-                                Registrar Recibo
+                                Registrar Compra
                             </Button>
                         </Grid>
 
