@@ -145,45 +145,32 @@ const Registrov = () => {
                 return fecha.toLocaleDateString('es-ES', options);
             }
         },
-        // Columna que muestra el precio de compra del vehículo.
-        // - 'field': 'precio_compra' hace referencia al campo que almacena el precio de compra.
-        // - 'headerName': 'Precio de Compra' es el nombre que se mostrará en la tabla como encabezado de la columna.
-        // - 'width': Define el ancho de la columna en píxeles (220px).
-        { field: 'precio_compra', headerName: 'Precio de Compra', width: 220 },
-        // Columna que muestra el precio del vehículo.
-        // - 'field': 'precio_vehiculo' se refiere al campo que contiene el precio del vehículo.
-        // - 'headerName': 'Precio de Vehículo' es el título que aparecerá en la columna.
-        // - 'width': Establece el ancho de la columna en 220px.
-        { field: 'precio_venta', headerName: 'Precio de Venta', width: 220 },
-        // Columna especial que renderiza acciones (botones de edición y eliminación).
-        // - 'field': Se deja vacío porque no se asocia a un campo específico de los datos.
-        // - 'headerName': 'Acciones' es el título que aparece en la columna, indicando que aquí se muestran las acciones.
-        // - 'renderCell': Es una función que define el contenido personalizado de las celdas en esta columna.
-        //   - Dentro del `renderCell`, se utiliza un `Stack` (de Material UI) para alinear los botones de edición y eliminación en fila, con un separador vertical entre ellos.
-        //   - El `IconButton` de edición (`<EditOutlined />`) permite editar el vehículo cuando se hace clic. Cambia el estado `isEdit` a `true`, establece los datos del vehículo en `body` y abre el diálogo de edición.
-        //   - El `IconButton` de eliminación (`<DeleteOutline />`) abre el diálogo de confirmación de eliminación y asigna el ID del vehículo a eliminar en el estado `idDelete`.
+
+
         {
-            field: '',
-            headerName: 'Acciones',
-            width: 200,
-            renderCell: (params) => (
-                <Stack direction='row' divider={<Divider orientation="vertical" flexItem />} justifyContent="center" alignItems="center" spacing={2}>
-                    <IconButton size='small' onClick={() => {
-                        setIsEdit(true);
-                        setBody(params.row);
-                        handleDialog();
-                    }}>
-                        <EditOutlined />
-                    </IconButton>
-                    <IconButton size='small' onClick={() => {
-                        handleDialogDelete();
-                        setIdDelete(params.id);
-                    }}>
-                        <DeleteOutline />
-                    </IconButton>
-                </Stack>
-            )
+            field: 'precio_compra',
+            headerName: 'Precio Compra',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+        },
+
+        {
+            field: 'precio_venta',
+            headerName: 'Precio Venta',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
         }
+
+
+
+   
+        
+
+
+       
+       
+       
+    
     ];
 
 

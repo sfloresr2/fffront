@@ -43,7 +43,16 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
         { field: 'id', headerName: 'ID', width: 120 }, // Primera columna que muestra el ID (Código)
         { field: 'nombre', headerName: 'Nombre', width: 220 },// Segunda columna que muestra el nombre
         { field: 'descripcion', headerName: 'Descripcion', width: 220 },// Tercera columna que muestra el correo electrónico
-        { field: 'precio', headerName: 'Precio', width: 220 },// Cuarta columna que muestra el número de teléfono
+
+        {
+            field: 'precio',
+            headerName: 'Precio',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+        },
+
+
+
         { field: 'tiempo', headerName: 'Tiempo', width: 220 },// Quinta columna que muestra la dirección
         // Columna para acciones (como editar y eliminar)
         {
@@ -290,20 +299,28 @@ const Servicios = () => { // Define el componente funcional 'Proimpo' usando una
                                 label='Descripcion'
                             />
                         </Grid>
-                        {/* Campo de texto para el teléfono del proveedor */}
-                        <Grid item xs={12} sm={12}>
-                            <TextField
-                                margin='normal'
-                                name='precio'
-                                value={body.precio}// Vinculado al estado 'body'
-                                onChange={onChange}// Maneja el cambio en el campo
-                                variant='outlined'
-                                size='small'
-                                color='primary'
-                                fullWidth
-                                label='Precio'
-                            />
-                        </Grid>
+                       
+                       
+                       
+                        <Grid item xs={12}>
+    <TextField
+        margin='normal'
+        name='precio'
+        value={body.precio}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        fullWidth
+        label='Precio'
+        InputProps={{
+            startAdornment: <Typography>Q.</Typography>
+        }}
+    />
+</Grid>
+
+
+
+
                         {/* Campo de texto para la dirección del proveedor */}
                         <Grid item xs={12} sm={12}>
                             <TextField

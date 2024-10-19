@@ -391,33 +391,38 @@ const Vehiculos = () => {
 
 
 
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='precio_compra'
-                            value={body.precio_compra}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Precio Compra'
-                        />
-                    </Grid>
+                    <Grid item xs={12}>
+    <TextField
+        margin='normal'
+        name='precio_compra'
+        value={body.precio_compra}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        fullWidth
+        label='Precio Compra'
+        InputProps={{
+            startAdornment: <Typography>Q.</Typography>
+        }}
+    />
+</Grid>
 
 
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='precio_vehiculo'
-                            value={body.precio_vehiculo}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Precio Vehiculo'
-                        />
-                    </Grid>
+<Grid item xs={12}>
+    <TextField
+        margin='normal'
+        name='precio_vehiculo'
+        value={body.precio_vehiculo}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        fullWidth
+        label='Precio Vehiculo'
+        InputProps={{
+            startAdornment: <Typography>Q.</Typography>
+        }}
+    />
+</Grid>
 
                     
                     <Grid item xs={12}>

@@ -217,7 +217,7 @@ const Productos = () => { // Definición del componente funcional "Productos".
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Fecha Compra'
+                            label='Fecha Entrada'
                             InputLabelProps={{
                                 shrink: true, /* Propiedad que indica que la etiqueta debe mantenerse encogida incluso cuando el campo tiene un valor, para que el diseño sea más limpio y legible. */
                             }}

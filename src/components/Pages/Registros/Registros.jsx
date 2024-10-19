@@ -88,34 +88,22 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
         { field: 'color', headerName: 'Color', width: 220 },// Columna para mostrar la descripción del producto
         
         { field: 'linea', headerName: 'Linea', width: 220 },// Columna para mostrar la cantidad de productos comprados
-        { field: 'precio', headerName: 'Precio', width: 220 },// Columna para mostrar el precio del producto
+
+        {
+            field: 'precio',
+            headerName: 'Precio',
+            width: 220,
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+        },
+        
+
+
+
       
         // Columna para mostrar las acciones (editar y eliminar) para cada fila de la tabla
-        {
-            field: '',
-            headerName: 'Acciones',
-            width: 200,
-            renderCell: (params) => (// Renderiza las acciones en una celda, usando 'renderCell' para definir el contenido personalizado
-                 // Usa Stack para alinear los botones de acción en una fila, separados por un Divider
-                <Stack direction='row' divider={<Divider orientation="vertical" flexItem />} justifyContent="center" alignItems="center" spacing={2}>
-                    {/* Botón para editar el producto */}
-                    <IconButton size='small' onClick={() => { 
-                        setIsEdit(true);// Cambia el estado a modo de edición
-                        setBody(params.row);// Coloca la fila actual en el estado 'body' para editar
-                        handleDialog();// Abre el diálogo de edición
-                    }}>
-                        <EditOutlined />{/* Ícono de edición */}
-                    </IconButton>
-                    {/* Botón para eliminar el producto */}
-                    <IconButton size='small' onClick={() => {
-                        handleDialogDelete();// Abre el diálogo de confirmación de eliminación
-                        setIdDelete(params.id); // Guarda el ID del producto a eliminar
-                    }}>
-                        <DeleteOutline /> {/* Ícono de eliminación */}
-                    </IconButton>
-                </Stack>
-            )
-        }
+       
+
+
     ];
 
 
@@ -214,22 +202,22 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
 
     const generatePDF = () => {// Función para generar el reporte PDF con todos los productos
         const doc = new jsPDF();// Crea una nueva instancia de jsPDF
-        doc.text("Reporte de Inventario", 20, 10);// Añade un título en la posición (20, 10) en la página
+        doc.text("Reporte de servicios vendidos", 20, 10);// Añade un título en la posición (20, 10) en la página
         doc.autoTable({// Utiliza el plugin autoTable de jsPDF para crear una tabla en el PDF
-            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',  'Fecha Compra',  'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
+            head: [['ID', 'Servicio', 'Fecha de Servicio',  'Marca',  'Modelo',  'Color', 'Linea', 'Precio']],// Definición de la cabecera de la tabla con los nombres de las columnas
             body: usuariosList.map(product => [ // El cuerpo de la tabla contiene los datos de la lista de productos 'usuariosList'
                 product.id, // ID del producto
-                product.nombre, // Nombre del producto
-                product.descripcion,// Descripción del producto
-                product.nombre_proveedor,// Nombre del proveedor
-                formatDate(product.fecha_compra),// Fecha de compra (formateada)
-               
-                product.cantidad, // Cantidad de productos
-                product.precio,// Precio unitario
-                product.subtotal// Subtotal (cantidad * precio)
+                product.nombre_servicios, // Nombre del producto
+                formatDate(product.fecha_servicio),// Fecha de compra (formateada)
+                product.marca,// Descripción del producto
+                product.modelo,// Nombre del proveedor
+                
+                product.color, // Cantidad de productos
+                product.linea,// Precio unitario
+                product.precio// Subtotal (cantidad * precio)
             ]) // Fin del body
         }); //Fin del doc
-        doc.save('reporte_inventario.pdf'); // Guarda el archivo PDF con el nombre 'reporte_inventario.pdf'
+        doc.save('reporte_servicios.pdf'); // Guarda el archivo PDF con el nombre 'reporte_inventario.pdf'
     };//Fin del reporte
 
 
@@ -460,7 +448,7 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
 
 
         
-            <Page title="FF| Inventario Productos">
+            <Page title="FF| Registro Servicios">
                  {/* Componente ToastAutoHide para mostrar mensajes de éxito o error */}
                 <ToastAutoHide message={mensaje} />
                  {/* Contenedor principal con un ancho máximo de 'lg' (large) */}
@@ -468,7 +456,7 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
                     {/* Box que aplica un padding-bottom (pb) de 5 unidades */}
                     <Box sx={{ pb: 5 }}>
                         {/* Título principal del módulo de inventario */}
-                        <Typography variant="h5">Inventario del Car Wash</Typography>
+                        <Typography variant="h5">Registro de Servicios del Car Wash</Typography>
                     </Box>
 
 
@@ -489,15 +477,15 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
 
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF general de inventario */}
-                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos</Button>
+                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Servicios</Button>
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF de productos "QuimicosDeLaEra" */}
-                            <Button onClick={generatePDFQuimicosDeLaEra} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de QuimicosDeLaEra</Button>
+                           {/* <Button onClick={generatePDFQuimicosDeLaEra} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de QuimicosDeLaEra</Button> */}
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             {/* Botón para generar el reporte PDF de productos "Quimicos FERKICA" */}
-                            <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de Quimicos FERKICA</Button>
+                           {/* <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de Quimicos FERKICA</Button>*/}
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             {/* Componente para mostrar la tabla con los datos de los productos */}
