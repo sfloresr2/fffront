@@ -9,7 +9,7 @@ import jsPDF from 'jspdf'; // Importa la biblioteca 'jsPDF', que se usa para gen
 import 'jspdf-autotable'; // Importa el plugin 'autotable' para jsPDF, que facilita la creación de tablas en los archivos PDF generados
 
 
-
+//dd
 const Servicios = () => { // Define el componente funcional 'Proimpo' usando una función de flecha
     const initialState = { // Define un estado inicial (initialState) que contiene las propiedades básicas para un objeto de información
         id: "", // Propiedad 'id', inicialmente vacía

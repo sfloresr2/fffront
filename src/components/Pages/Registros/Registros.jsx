@@ -9,10 +9,11 @@ import jsPDF from 'jspdf'; // Importa la librería jsPDF, que permite generar ar
 import 'jspdf-autotable'; // Importa el plugin 'autotable' de jsPDF, que facilita la creación de tablas dentro de los PDF
 
 
-
+//dd
 const Registros = () => {// Definición del componente funcional 'Inventario'
     const initialState = {// Definición de un objeto 'initialState', que contiene el estado inicial del inventario
         id: "", // Campo para el identificador único del producto (probablemente generado automáticamente)
+        id_clientes: "",
         id_servicios: "",
         fecha_servicio: "",
         marca: "", // Campo para el nombre del producto
@@ -21,7 +22,9 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
         linea: "", // Campo para la fecha de compra del producto
 
         precio: "", // Campo para el precio del producto
+        nombre_clientes: "",
         nombre_servicios: "", // Campo para almacenar el nombre del proveedor (probablemente traído desde otra tabla o fuente)
+        
         
     };//Fin de la constante inventario
 
@@ -38,6 +41,7 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
 
 
     const [roles, setRoles] = useState([]); // Estado para almacenar la lista de roles (parece que aquí se refiere a una lista de proveedores, aunque el nombre es 'roles')
+    const [roless, setRoless] = useState([]);
     const [usuariosList, setUsuariosList] = useState([]);// Estado para almacenar una lista de usuarios, posiblemente relacionado con los proveedores o productos
     const [body, setBody] = useState(initialState);// Estado que contiene el cuerpo del formulario o los datos del producto/proveedor, inicializado con 'initialState'
     const [openDialog, setOpenDialog] = useState(false);// Estado para controlar la apertura o cierre de un diálogo (modal), por defecto está cerrado (false)
@@ -64,11 +68,23 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
         }//Fin del catch
     };//Fin del fetchproveedores
 
+        //para clientes
+        const fetchRoless = async () => {
+            try {
+                const response = await ApiRequest().get('/clientesvvv');
+                setRoless(response.data);
+            } catch (error) {
+                console.error('Error fetching roles data:', error);
+            }
+        };
+    
+
 
 
     const columns = [// Definición de las columnas para una tabla, probablemente usando un componente de tabla como DataGrid
         { field: 'id', headerName: 'ID', width: 120 },// Columna para mostrar el código del producto
-
+        { field: 'nombre_clientes', headerName: 'Clientes', width: 220 },
+        
         { field: 'nombre_servicios', headerName: 'Servicio', width: 220 },// Columna para mostrar el nombre del proveedor del producto
         {
             // Columna para mostrar la fecha de compra del producto
@@ -221,6 +237,58 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
     };//Fin del reporte
 
 
+
+    const generateReceipt = () => {
+        const groupedServices = {};
+    
+        // Agrupamos los servicios por cliente y fecha
+        usuariosList.forEach(service => {
+            const key = `${service.nombre_clientes}-${formatDate(service.fecha_servicio)}`;
+            if (!groupedServices[key]) {
+                groupedServices[key] = {
+                    cliente: service.nombre_clientes,
+                    fecha: formatDate(service.fecha_servicio),
+                    servicios: [],
+                    total: 0,
+                };
+            }
+            groupedServices[key].servicios.push(service);
+            groupedServices[key].total += parseFloat(service.precio);
+        });
+    
+        // Crear PDF por cada grupo
+        for (let receiptKey in groupedServices) {
+            const { cliente, fecha, servicios, total } = groupedServices[receiptKey];
+    
+            const doc = new jsPDF();
+            doc.text(`Recibo de Servicios - Cliente: ${cliente}`, 20, 10);
+            doc.text(`Fecha: ${fecha}`, 20, 20);
+            
+            // Crear tabla de servicios
+            doc.autoTable({
+                head: [['ID', 'Servicio', 'Precio']],
+                body: servicios.map(service => [service.id, service.nombre_servicios, `Q. ${parseFloat(service.precio).toFixed(2)}`]),
+            });
+    
+            // Mostrar el total a pagar
+            doc.text(`Total a Pagar: Q. ${total.toFixed(2)}`, 20, doc.autoTable.previous.finalY + 10);
+            
+            // Guardar PDF
+            doc.save(`recibo_${cliente}_${fecha}.pdf`);
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     
     const generatePDFQuimicosDeLaEra = () => {// Función para generar el reporte de productos de "QuimicosDeLaEra"
         const doc = new jsPDF();// Crea una nueva instancia de jsPDF
@@ -272,6 +340,7 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
         init();// Llama a la función init para obtener la lista de productos
         fetchProveedores();// Llama a la función fetchProveedores para obtener la lista de proveedores
         // Esta dependencia vacía significa que solo se ejecutará una vez al montar el componente
+        fetchRoless();
         // El efecto solo se ejecutará una vez, ya que el array de dependencias está vacío
     }, []);
 
@@ -305,7 +374,27 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
                 <DialogContent>
                     <Grid container spacing={2}>
 
+                  
+<Grid item xs={12} sm={6}>
+    <TextField
+        id="cliente" // Agrega un id único aquí
+        margin='normal'
+        name='nombre_clientes'
+        value={body.nombre_clientes}
+        onChange={onChange}
+        variant='outlined'
+        size='small'
+        color='primary'
+        fullWidth
+        label='Nombre del Cliente'
+    />
+    <InputLabel htmlFor="cliente">Cliente Vehículo</InputLabel> {/* Cambia el for para que coincida con el id */}
+</Grid>
 
+
+                    
+                    
+                    
                     <Grid item xs={12}>
                             {/* Etiqueta para el campo de selección de proveedor */}
                             <InputLabel htmlFor="id_servicios">Servicios</InputLabel>
@@ -487,6 +576,14 @@ const Registros = () => {// Definición del componente funcional 'Inventario'
                             {/* Botón para generar el reporte PDF de productos "Quimicos FERKICA" */}
                            {/* <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Productos de Quimicos FERKICA</Button>*/}
                         </Grid>
+                        <Grid item xs={12} sm={3}>
+    {/* Botón para generar el informe de servicios agrupado por cliente y fecha */}
+    <Button onClick={generateReceipt} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>
+        Generar Recibos
+    </Button>
+</Grid>
+
+
                         <Grid item xs={12} sm={12}>
                             {/* Componente para mostrar la tabla con los datos de los productos */}
                             <CommonTable data={usuariosList} columns={columns} />

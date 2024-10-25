@@ -16,12 +16,13 @@ const Proimpo = lazy(() => import('../components/Pages/Proimpo'))
 const Ventasvf = lazy(() => import('../components/Pages/Ventasvf'))
 const Registrov = lazy(() => import('../components/Pages/Registrov'))
 const Clientes = lazy(() => import('../components/Pages/Clientes'))
-const Facturas = lazy(() => import('../components/Pages/Facturas'))
+
 const Servicios = lazy(() => import('../components/Pages/Servicios'))
 const Salidas = lazy(() => import('../components/Pages/Salidas'))
 const Salidasre = lazy(() => import('../components/Pages/Salidasre'))
 const Ventassf = lazy(() => import('../components/Pages/Ventassf'))
 const Registros = lazy(() => import('../components/Pages/Registros'))
+const Detalles = lazy(() => import('../components/Pages/Detalles'))
 
 
 const routes = [
@@ -56,6 +57,14 @@ const routes = [
 				exact: true,
 				render: props => <RouteController component={Productos} {...props} />
 			},
+
+			{
+				path: `/${APP_VALUES.ROOT_ROUTE}/detalles`,
+				exact: true,
+				render: props => <RouteController component={Detalles} {...props} />
+			},
+
+
 
 			{
 				path: `/${APP_VALUES.ROOT_ROUTE}/inventario`,
@@ -113,11 +122,7 @@ const routes = [
 				exact: true,
 				render: props => <RouteController component={Clientes} {...props} />
 			},
-			{
-				path: `/${APP_VALUES.ROOT_ROUTE}/facturas`,
-				exact: true,
-				render: props => <RouteController component={Facturas} {...props} />
-			},
+
 			{
 				path: `/${APP_VALUES.ROOT_ROUTE}/servicios`,
 				exact: true,

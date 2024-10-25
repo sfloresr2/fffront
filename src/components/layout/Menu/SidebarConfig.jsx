@@ -20,15 +20,18 @@ const sidebarConfig = [
 		icon: <BusinessOutlined /> // Cambiado a un icono de inventario
 	},
 
-	{
-		title: 'Compras Productos',
-		path: '/app/facturas',
-		icon: <ReceiptOutlined /> // Cambiado a un icono de inventario
-	},
+	
 
 	{
 		title: 'Entrada Productos',
 		path: '/app/productos',
+		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+	},
+
+
+	{
+		title: 'Detalles',
+		path: '/app/detalles',
 		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
 	},
 

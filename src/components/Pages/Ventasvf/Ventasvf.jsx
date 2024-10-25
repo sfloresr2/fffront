@@ -6,7 +6,7 @@ import ToastAutoHide from '../../common/ToastAutoHide';
 
 
 
-//ventas
+//ventassss
 const Ventasvf = () => {
     const initialState = {
             id: "",	

@@ -191,7 +191,7 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
 
     const onSubmit = async () => {// Función 'onSubmit' que maneja el envío de los datos del formulario
         try {
-            const { data } = await ApiRequest().post('/guardar_product', body);// Realiza una solicitud POST a la API en la ruta '/guardar_product' con los datos del producto en el cuerpo ('body')
+            const { data } = await ApiRequest().post('/guardar_compra', body);// Realiza una solicitud POST a la API en la ruta '/guardar_product' con los datos del producto en el cuerpo ('body')
             handleDialog();// Cierra el diálogo de edición (si estaba abierto)
             setBody(initialState);// Restablece el estado 'body' a su valor inicial después de enviar los datos
             setMensaje({ // Muestra un mensaje de éxito con la respuesta de la API
