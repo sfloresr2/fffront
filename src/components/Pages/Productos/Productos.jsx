@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel } from '@mui/material';
+import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel, Autocomplete } from '@mui/material';
 import ApiRequest from '../../../helpers/axiosInstances';
 import Page from '../../common/Page';
 import ToastAutoHide from '../../common/ToastAutoHide';
@@ -14,12 +14,13 @@ const Productos = () => {
         precio: ""
     };
 
-    const [productos, setProductos] = useState([initialProductState]); // Array de productos
-    const [compra, setCompra] = useState({ id_proveedor: '', fecha_compra: '', total: 0 }); // Información de la compra
-    const [roles, setRoles] = useState([]); // Lista de proveedores
+    const [productos, setProductos] = useState([initialProductState]);
+    const [compra, setCompra] = useState({ id_proveedor: '', fecha_compra: '', total: 0 });
+    const [roles, setRoles] = useState([]);
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
-    const [compraRealizada, setCompraRealizada] = useState(null); // Detalles de la compra realizada
-    const [comprasList, setComprasList] = useState([]); // Lista de compras realizadas
+    const [compraRealizada, setCompraRealizada] = useState(null);
+    const [comprasList, setComprasList] = useState([]);
+    const [productosInventario, setProductosInventario] = useState([]);
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -39,8 +40,18 @@ const Productos = () => {
         }
     };
 
+    const fetchProductosInventario = async () => {
+        try {
+            const response = await ApiRequest().get('/productos');
+            setProductosInventario(response.data);
+        } catch (error) {
+            console.error('Error fetching inventory products:', error);
+        }
+    };
+
     useEffect(() => {
         fetchRoles();
+        fetchProductosInventario();
     }, []);
 
     const handleProductChange = (index, { target }) => {
@@ -73,31 +84,29 @@ const Productos = () => {
         calcularTotal();
     }, [productos]);
 
+    const onSelectProducto = (index, productoSeleccionado) => {
+        const updatedProductos = [...productos];
+        updatedProductos[index] = {
+            ...updatedProductos[index],
+            codigo: productoSeleccionado.codigo,
+            nombre: productoSeleccionado.nombre,
+            descripcion: productoSeleccionado.descripcion,
+            cantidad: 1, // Cantidad predeterminada
+            precio: productoSeleccionado.precio
+        };
+        setProductos(updatedProductos);
+    };
+
     const onSubmit = async () => {
         try {
             const { data } = await ApiRequest().post('/guardar_compra', { compra, productos });
-            
-            const nuevaCompra = {
-                ...compra,
-                productos: [...productos]
-            };
-
-            // Actualizar lista de compras
+            const nuevaCompra = { ...compra, productos: [...productos] };
             setComprasList([...comprasList, nuevaCompra]);
-
             setCompraRealizada(nuevaCompra);
-            setProductos([initialProductState]); // Limpiar el estado de productos
-            setMensaje({
-                ident: new Date().getTime(),
-                message: data.message,
-                type: 'success'
-            });
+            setProductos([initialProductState]);
+            setMensaje({ ident: new Date().getTime(), message: data.message, type: 'success' });
         } catch ({ response }) {
-            setMensaje({
-                ident: new Date().getTime(),
-                message: response.data.sqlMessage,
-                type: 'error'
-            });
+            setMensaje({ ident: new Date().getTime(), message: response.data.sqlMessage, type: 'error' });
         }
     };
 
@@ -109,7 +118,6 @@ const Productos = () => {
                     <Typography variant="h5">Registrar Productos de Car Wash</Typography>
                 </Box>
 
-                {/* Información general de la compra */}
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="id_proveedor">Proveedor</InputLabel>
@@ -139,15 +147,29 @@ const Productos = () => {
                             size='small'
                             fullWidth
                             label='Fecha de Compra'
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
                 </Grid>
 
                 {productos.map((producto, index) => (
                     <Grid container spacing={2} key={index}>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                options={productosInventario}
+                                getOptionLabel={(option) => option.nombre || ""}
+                                freeSolo // Permite ingresar un producto nuevo
+                                onChange={(event, newValue) => {
+                                    if (newValue && typeof newValue === 'object') {
+                                        onSelectProducto(index, newValue);
+                                    } else {
+                                        // Si el producto es nuevo, solo establece el nombre
+                                        handleProductChange(index, { target: { name: 'nombre', value: newValue } });
+                                    }
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Buscar o Agregar Producto" />}
+                            />
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 margin='normal'
@@ -157,7 +179,7 @@ const Productos = () => {
                                 variant='outlined'
                                 size='small'
                                 fullWidth
-                                label='Código'
+                                label='Código Producto'
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -206,17 +228,12 @@ const Productos = () => {
                                 size='small'
                                 fullWidth
                                 label='Precio'
-                                InputProps={{
-                                    startAdornment: <Typography>Q.</Typography>
-                                }}
+                                InputProps={{ startAdornment: <Typography>Q.</Typography> }}
                             />
                         </Grid>
                         {productos.length > 1 && (
                             <Grid item xs={12}>
-                                <Button
-                                    color='secondary'
-                                    onClick={() => removeProduct(index)}
-                                >
+                                <Button color='secondary' onClick={() => removeProduct(index)}>
                                     Eliminar Producto
                                 </Button>
                             </Grid>
@@ -224,51 +241,21 @@ const Productos = () => {
                     </Grid>
                 ))}
 
-                {/* Mostrar el total calculado */}
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h6">Total de la compra: Q. {compra.total}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant='contained' color='primary' onClick={addProduct}>
-                            Agregar Producto
+                            Agregar Producto a la compra
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={onSubmit}
-                        >
+                        <Button variant='contained' color='primary' onClick={onSubmit}>
                             Registrar Compra
                         </Button>
                     </Grid>
                 </Grid>
-
-                {/* Mostrar lista de compras registradas */}
-                {comprasList.length > 0 && (
-                    <Box mt={5}>
-                        <Typography variant="h6">Lista de Compras Realizadas</Typography>
-                        {comprasList.map((compra, index) => (
-                            <Box key={index} mb={4} p={2} border={1}>
-                                <Typography variant="h6">Compra {index + 1}</Typography>
-                                <Typography>Proveedor: {roles.find(rol => rol.id === compra.id_proveedor)?.nombre}</Typography>
-                                <Typography>Fecha de Compra: {compra.fecha_compra}</Typography>
-                                <Typography>Total: Q. {compra.total}</Typography>
-
-                                <Typography variant="h6" mt={2}>Productos Comprados:</Typography>
-                                {compra.productos.map((producto, i) => (
-                                    <Box key={i} ml={2} mb={2}>
-                                        <Typography>Código: {producto.codigo}</Typography>
-                                        <Typography>Nombre: {producto.nombre}</Typography>
-                                        <Typography>Cantidad: {producto.cantidad}</Typography>
-                                        <Typography>Precio: Q. {producto.precio}</Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        ))}
-                    </Box>
-                )}
             </Container>
         </Page>
     );

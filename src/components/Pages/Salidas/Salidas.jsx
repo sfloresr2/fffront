@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel } from '@mui/material';
+import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel, Autocomplete } from '@mui/material';
 import ApiRequest from '../../../helpers/axiosInstances';
 import Page from '../../common/Page';
 import ToastAutoHide from '../../common/ToastAutoHide';
@@ -14,11 +14,12 @@ const Salidas = () => {
         precio: ""
     };
 
-    const [productos, setProductos] = useState([initialProductState]); 
-    const [salida, setSalida] = useState({ id_proveedor: '', fecha_salida: '' }); 
-    const [roles, setRoles] = useState([]); 
+    const [productos, setProductos] = useState([initialProductState]);
+    const [salida, setSalida] = useState({ id_proveedor: '', fecha_salida: '' });
+    const [roles, setRoles] = useState([]);
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
     const [salidasList, setSalidasList] = useState([]);
+    const [productosInventario, setProductosInventario] = useState([]);
 
     const fetchRoles = async () => {
         try {
@@ -29,14 +30,37 @@ const Salidas = () => {
         }
     };
 
+    const fetchProductosInventario = async () => {
+        try {
+            const response = await ApiRequest().get('/productos');
+            setProductosInventario(response.data);
+        } catch (error) {
+            console.error('Error fetching inventory products:', error);
+        }
+    };
+
     useEffect(() => {
         fetchRoles();
+        fetchProductosInventario();
     }, []);
 
     const handleProductChange = (index, { target }) => {
         const { name, value } = target;
         const updatedProductos = [...productos];
         updatedProductos[index] = { ...updatedProductos[index], [name]: value };
+        setProductos(updatedProductos);
+    };
+
+    const onSelectProducto = (index, productoSeleccionado) => {
+        const updatedProductos = [...productos];
+        updatedProductos[index] = {
+            ...updatedProductos[index],
+            codigo: productoSeleccionado.codigo,
+            nombre: productoSeleccionado.nombre,
+            descripcion: productoSeleccionado.descripcion,
+            cantidad: 1, // Cantidad predeterminada
+            precio: productoSeleccionado.precio
+        };
         setProductos(updatedProductos);
     };
 
@@ -56,33 +80,20 @@ const Salidas = () => {
 
     const onSubmit = async () => {
         try {
-            // Enviar fecha_salida y productos directamente
             const { data } = await ApiRequest().post('/guardar_products', { 
                 productos, 
-                fecha_salida: salida.fecha_salida // Se envía directamente sin formatear
+                fecha_salida: salida.fecha_salida 
             });
-
             const nuevaSalida = {
                 ...salida,
                 productos: [...productos]
             };
-
-            // Actualizar lista de salidas
             setSalidasList([...salidasList, nuevaSalida]);
-
             setSalida({ id_proveedor: '', fecha_salida: '' });
-            setProductos([initialProductState]); // Limpiar el estado de productos
-            setMensaje({
-                ident: new Date().getTime(),
-                message: data.message,
-                type: 'success'
-            });
+            setProductos([initialProductState]);
+            setMensaje({ ident: new Date().getTime(), message: data.message, type: 'success' });
         } catch ({ response }) {
-            setMensaje({
-                ident: new Date().getTime(),
-                message: response.data.message,
-                type: 'error'
-            });
+            setMensaje({ ident: new Date().getTime(), message: response.data.message, type: 'error' });
         }
     };
 
@@ -117,21 +128,34 @@ const Salidas = () => {
                             type='date'
                             margin='normal'
                             name='fecha_salida'
-                            value={salida.fecha_salida} // Mantener el valor sin formatear
+                            value={salida.fecha_salida}
                             onChange={handleSalidaChange}
                             variant='outlined'
                             size='small'
                             fullWidth
                             label='Fecha de Salida'
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
                 </Grid>
 
                 {productos.map((producto, index) => (
                     <Grid container spacing={2} key={index}>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                options={productosInventario}
+                                getOptionLabel={(option) => option.nombre || ""}
+                                freeSolo
+                                onChange={(event, newValue) => {
+                                    if (newValue && typeof newValue === 'object') {
+                                        onSelectProducto(index, newValue);
+                                    } else {
+                                        handleProductChange(index, { target: { name: 'nombre', value: newValue } });
+                                    }
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Buscar o Agregar Producto" />}
+                            />
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 margin='normal'
@@ -180,16 +204,13 @@ const Salidas = () => {
                                 label='Cantidad'
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            {productos.length > 1 && (
-                                <Button
-                                    color='secondary'
-                                    onClick={() => removeProduct(index)}
-                                >
+                        {productos.length > 1 && (
+                            <Grid item xs={12}>
+                                <Button color='secondary' onClick={() => removeProduct(index)}>
                                     Eliminar Producto
                                 </Button>
-                            )}
-                        </Grid>
+                            </Grid>
+                        )}
                     </Grid>
                 ))}
 
@@ -200,11 +221,7 @@ const Salidas = () => {
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={onSubmit}
-                        >
+                        <Button variant='contained' color='primary' onClick={onSubmit}>
                             Registrar Salida
                         </Button>
                     </Grid>

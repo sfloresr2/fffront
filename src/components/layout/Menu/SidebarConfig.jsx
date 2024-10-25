@@ -44,7 +44,7 @@ const sidebarConfig = [
 	{
 		title: 'Salida Productos',
 		path: '/app/salidas',
-		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras dd
 	},
 	{
 		title: 'Registro Salidas',
