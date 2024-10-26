@@ -16,9 +16,10 @@ const Ventassf = () => {
 
     const [roles, setRoles] = useState([]);
     const [roless, setRoless] = useState([]);
+    const [serviciosDisponibles, setServiciosDisponibles] = useState([]);
     const [body, setBody] = useState({ id_clientes: "", fecha_servicio: "", servicios: [] });
     const [servicios, setServicios] = useState([initialServiceState]);
-    const [total, setTotal] = useState(0);  // State to store total price
+    const [total, setTotal] = useState(0);  
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
 
     const fetchRoles = async () => {
@@ -39,6 +40,21 @@ const Ventassf = () => {
         }
     };
 
+    const fetchServiciosDisponibles = async () => {
+        try {
+            const response = await ApiRequest().get('/serviciosc');
+            setServiciosDisponibles(response.data);
+        } catch (error) {
+            console.error('Error fetching available services:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchRoles();
+        fetchRoless();
+        fetchServiciosDisponibles();
+    }, []);
+
     const onChangeClient = ({ target }) => {
         const { name, value } = target;
         setBody(prevBody => ({
@@ -51,16 +67,24 @@ const Ventassf = () => {
         const { name, value } = event.target;
         const newServicios = [...servicios];
         newServicios[index][name] = value;
+
+        if (name === 'id_servicios') {
+            const selectedService = serviciosDisponibles.find(service => service.id === value);
+            if (selectedService) {
+                newServicios[index].precio = selectedService.precio;
+            }
+        }
+
         setServicios(newServicios);
-        calculateTotal(newServicios);  // Update total whenever a service changes
+        calculateTotal(newServicios);
     };
 
     const calculateTotal = (services) => {
         const total = services.reduce((acc, service) => {
-            const price = parseFloat(service.precio) || 0;  // Parse price, default to 0 if NaN
+            const price = parseFloat(service.precio) || 0;
             return acc + price;
         }, 0);
-        setTotal(total);  // Update total state
+        setTotal(total);
     };
 
     const addService = () => {
@@ -70,7 +94,7 @@ const Ventassf = () => {
     const removeService = (index) => {
         const newServicios = servicios.filter((_, i) => i !== index);
         setServicios(newServicios);
-        calculateTotal(newServicios);  // Update total after removal
+        calculateTotal(newServicios);
     };
 
     const onSubmit = async () => {
@@ -79,17 +103,12 @@ const Ventassf = () => {
             const { data } = await ApiRequest().post('/guardar_serviciosvvv', dataToSend);
             setMensaje({ ident: new Date().getTime(), message: data.message, type: 'success' });
             setBody({ id_clientes: "", fecha_servicio: "", servicios: [] });
-            setServicios([initialServiceState]); // Resetea la lista de servicios.
-            setTotal(0);  // Reset the total
+            setServicios([initialServiceState]);
+            setTotal(0);
         } catch ({ response }) {
             setMensaje({ ident: new Date().getTime(), message: response.data.sqlMessage, type: 'error' });
         }
     };
-
-    useEffect(() => {
-        fetchRoles();
-        fetchRoless();
-    }, []);
 
     return (
         <Page title="FF | Registro de Servicios">
@@ -128,9 +147,7 @@ const Ventassf = () => {
                             size='small'
                             fullWidth
                             label='Fecha Servicio'
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
 

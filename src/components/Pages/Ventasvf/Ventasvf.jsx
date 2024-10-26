@@ -1,58 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel } from '@mui/material';
+import { TextField, Container, Typography, Grid, Box, Button, MenuItem, Select, InputLabel, Autocomplete } from '@mui/material';
 import ApiRequest from '../../../helpers/axiosInstances';
 import Page from '../../common/Page';
 import ToastAutoHide from '../../common/ToastAutoHide';
 
-
-
-//ventassss
 const Ventasvf = () => {
     const initialState = {
-            id: "",	
-            codigo:"",
-            placa:"",
-            tipo_vehiculo:"",
-            marca: "",	
-            modelo: "",	
-            color: "",
-            uso:"",
-            linea:"",
-            chasis:"",
-            serie:"",
-            numero_asientos: "",
-            ejes:"",
-            numero_vin: "",
-            motor:"",
-            cilindros:"",
-            c_c:"",	
-            id_clientes: "",
-            fecha_venta: "",	
-            precio_compra: "",	
-            precio_venta: ""	
+        id: "",	
+        codigo: "",
+        placa: "",
+        tipo_vehiculo: "",
+        marca: "",	
+        modelo: "",	
+        color: "",
+        uso: "",
+        linea: "",
+        chasis: "",
+        serie: "",
+        numero_asientos: "",
+        ejes: "",
+        numero_vin: "",
+        motor: "",
+        cilindros: "",
+        c_c: "",	
+        id_clientes: "",
+        fecha_venta: "",	
+        precio_compra: "",	
+        precio_venta: ""	
     };
-
-
-
-    // Modificación para evitar desfase por zona horaria
-    const formatDate = (date) => {
-        if (!date) return '';
-        const d = new Date(date);
-        // Ajustar la fecha sumando horas para evitar el desfase por la zona horaria
-        d.setHours(d.getHours() + 12);  // Sumar 12 horas para asegurar el día correcto
-        const month = ('0' + (d.getMonth() + 1)).slice(-2);
-        const day = ('0' + d.getDate()).slice(-2);
-        return d.getFullYear() + '-' + month + '-' + day;
-    };
-
-
 
     const [roles, setRoles] = useState([]);
     const [body, setBody] = useState(initialState);
     const [isEdit, setIsEdit] = useState(false);
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
-
-
+    const [vehiculosInventario, setVehiculosInventario] = useState([]);
 
     const fetchRoles = async () => {
         try {
@@ -63,7 +44,19 @@ const Ventasvf = () => {
         }
     };
 
+    const fetchVehiculosInventario = async () => {
+        try {
+            const response = await ApiRequest().get('/vehiculos');
+            setVehiculosInventario(response.data);
+        } catch (error) {
+            console.error('Error fetching vehicles data:', error);
+        }
+    };
 
+    useEffect(() => {
+        fetchRoles();
+        fetchVehiculosInventario();
+    }, []);
 
     const onChange = ({ target }) => {
         const { name, value } = target;
@@ -73,67 +66,76 @@ const Ventasvf = () => {
         });
     };
 
-
+    const onSelectVehiculo = (vehiculoSeleccionado) => {
+        setBody({
+            ...body,
+            codigo: vehiculoSeleccionado.codigo,
+            placa: vehiculoSeleccionado.placa,
+            tipo_vehiculo: vehiculoSeleccionado.tipo_vehiculo,
+            marca: vehiculoSeleccionado.marca,
+            modelo: vehiculoSeleccionado.modelo,
+            color: vehiculoSeleccionado.color,
+            uso: vehiculoSeleccionado.uso,
+            linea: vehiculoSeleccionado.linea,
+            chasis: vehiculoSeleccionado.chasis,
+            serie: vehiculoSeleccionado.serie,
+            numero_asientos: vehiculoSeleccionado.numero_asientos,
+            ejes: vehiculoSeleccionado.ejes,
+            numero_vin: vehiculoSeleccionado.numero_vin,
+            motor: vehiculoSeleccionado.motor,
+            cilindros: vehiculoSeleccionado.cilindros,
+            c_c: vehiculoSeleccionado.c_c,
+            precio_compra: vehiculoSeleccionado.precio_compra
+        });
+    };
 
     const onSubmit = async () => {
         try {
             const { data } = await ApiRequest().post('/guardar_vehicv', body);
-            setMensaje({
-                ident: new Date().getTime(),
-                message: data.message,
-                type: 'success'
-            });
+            setMensaje({ ident: new Date().getTime(), message: data.message, type: 'success' });
             setBody(initialState);
             setIsEdit(false);
         } catch ({ response }) {
-            setMensaje({
-                ident: new Date().getTime(),
-                message: response.data.sqlMessage,
-                type: 'error'
-            });
+            setMensaje({ ident: new Date().getTime(), message: response.data.sqlMessage, type: 'error' });
         }
     };
-
-
 
     const onEdit = async () => {
         try {
             const { data } = await ApiRequest().post('/editar_vehicv', body);
-            setMensaje({
-                ident: new Date().getTime(),
-                message: data.message,
-                type: 'success'
-            });
+            setMensaje({ ident: new Date().getTime(), message: data.message, type: 'success' });
             setBody(initialState);
             setIsEdit(false);
         } catch ({ response }) {
-            setMensaje({
-                ident: new Date().getTime(),
-                message: response.data.sqlMessage,
-                type: 'error'
-            });
+            setMensaje({ ident: new Date().getTime(), message: response.data.sqlMessage, type: 'error' });
         }
     };
-
-
-
-    useEffect(() => {
-        fetchRoles();
-    }, []);
-
-
 
     return (
         <Page title="FF | Ventas Vehiculos">
             <ToastAutoHide message={mensaje} />
             <Container maxWidth='lg'>
                 <Box sx={{ pb: 5 }}>
-                    <Typography variant="h5">Módulo de Registro de Información de  {isEdit ? 'Editar Vehiculo' : 'Ventas de Vehiculo'}</Typography>
+                    <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Vehiculo' : 'Ventas de Vehiculo'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
 
-                
-                <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6}>
+                        <Autocomplete
+                            options={vehiculosInventario}
+                            getOptionLabel={(option) => option.placa || ""}
+                            onChange={(event, newValue) => {
+                                if (newValue && typeof newValue === 'object') {
+                                    onSelectVehiculo(newValue);
+                                } else {
+                                    setBody({ ...body, placa: newValue });
+                                }
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Buscar o Agregar Vehículo" />}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
                             name='codigo'
@@ -142,22 +144,7 @@ const Ventasvf = () => {
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Codigo'
-                        />
-                    </Grid>
-                
-                
-                
-                <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='placa'
-                            value={body.placa}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Placa'
+                            label='Código'
                         />
                     </Grid>
 
@@ -170,13 +157,10 @@ const Ventasvf = () => {
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Tipo vehiculo'
+                            label='Tipo de Vehículo'
                         />
                     </Grid>
 
-
-                    
-                    
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -189,8 +173,6 @@ const Ventasvf = () => {
                             label='Marca'
                         />
                     </Grid>
-
-
 
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -217,7 +199,6 @@ const Ventasvf = () => {
                             label='Color'
                         />
                     </Grid>
-
 
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -280,10 +261,9 @@ const Ventasvf = () => {
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Numero de Asientos'
+                            label='Número de Asientos'
                         />
                     </Grid>
-
 
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -298,8 +278,6 @@ const Ventasvf = () => {
                         />
                     </Grid>
 
-
-
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -309,7 +287,7 @@ const Ventasvf = () => {
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='Numero de VIN'
+                            label='Número de VIN'
                         />
                     </Grid>
 
@@ -348,14 +326,12 @@ const Ventasvf = () => {
                             variant='outlined'
                             size='small'
                             fullWidth
-                            label='c_c'
+                            label='C.C.'
                         />
                     </Grid>
 
-
-
                     <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="id_clientes">Cliente Vehiculo</InputLabel>
+                        <InputLabel htmlFor="id_clientes">Cliente Vehículo</InputLabel>
                         <Select
                             name="id_clientes"
                             value={body.id_clientes || ''}
@@ -372,13 +348,12 @@ const Ventasvf = () => {
                         </Select>
                     </Grid>
 
-
                     <Grid item xs={12} sm={6}>
                         <TextField
                             type='date'
                             margin='normal'
                             name='fecha_venta'
-                            value={formatDate(body.fecha_venta)}
+                            value={body.fecha_venta}
                             onChange={onChange}
                             variant='outlined'
                             size='small'
@@ -390,47 +365,41 @@ const Ventasvf = () => {
                         />
                     </Grid>
 
+                    <Grid item xs={12}>
+                        <TextField
+                            margin='normal'
+                            name='precio_compra'
+                            value={body.precio_compra}
+                            onChange={onChange}
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            label='Precio Compra'
+                            InputProps={{
+                                startAdornment: <Typography>Q.</Typography>
+                            }}
+                        />
+                    </Grid>
 
                     <Grid item xs={12}>
-    <TextField
-        margin='normal'
-        name='precio_compra'
-        value={body.precio_compra}
-        onChange={onChange}
-        variant='outlined'
-        size='small'
-        fullWidth
-        label='Precio Compra'
-        InputProps={{
-            startAdornment: <Typography>Q.</Typography>
-        }}
-    />
-</Grid>
+                        <TextField
+                            margin='normal'
+                            name='precio_venta'
+                            value={body.precio_venta}
+                            onChange={onChange}
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            label='Precio Venta'
+                            InputProps={{
+                                startAdornment: <Typography>Q.</Typography>
+                            }}
+                        />
+                    </Grid>
 
-
-<Grid item xs={12}>
-    <TextField
-        margin='normal'
-        name='precio_venta'
-        value={body.precio_venta}
-        onChange={onChange}
-        variant='outlined'
-        size='small'
-        fullWidth
-        label='Precio Venta'
-        InputProps={{
-            startAdornment: <Typography>Q.</Typography>
-        }}
-    />
-    </Grid>
-
-
-
-
-                    
                     <Grid item xs={12}>
                         <Button variant='contained' color='primary' onClick={isEdit ? onEdit : onSubmit}>
-                            {isEdit ? 'Editar Venta' : 'Registrar Venta de Vehiculo'}
+                            {isEdit ? 'Editar Venta' : 'Registrar Venta de Vehículo'}
                         </Button>
                     </Grid>
                 </Grid>
