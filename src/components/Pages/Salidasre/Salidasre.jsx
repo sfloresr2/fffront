@@ -202,14 +202,14 @@ const Salidasre = () => {// Definición del componente funcional 'Inventario'
                 product.nombre, // Nombre del producto
                 product.descripcion,// Descripción del producto
                 product.nombre_proveedor,// Nombre del proveedor
-                formatDate(product.fecha_compra),// Fecha de compra (formateada)
+                formatDate(product.fecha_salida),// Fecha de compra (formateada)
                
                 product.cantidad, // Cantidad de productos
                 product.precio,// Precio unitario
                 product.subtotal// Subtotal (cantidad * precio)
             ]) // Fin del body
         }); //Fin del doc
-        doc.save('reporte_inventario.pdf'); // Guarda el archivo PDF con el nombre 'reporte_inventario.pdf'
+        doc.save('reporte_salidas.pdf'); // Guarda el archivo PDF con el nombre 'reporte_inventario.pdf'
     };//Fin del reporte
 
 
