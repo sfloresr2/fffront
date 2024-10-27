@@ -169,8 +169,8 @@ const Usuarios = () => {
         const doc = new jsPDF();
         doc.text(title, 20, 10);
         doc.autoTable({
-            head: [['ID', 'Correo', 'Nombre', 'Usuario', 'Rol', 'Estado']],
-            body: usuarios.map(user => [user.id, user.correo, user.nombre, user.usuario, user.rol, user.estado])
+            head: [['ID', 'Correo', 'Nombre', 'Usuario',  'Estado']],
+            body: usuarios.map(user => [user.id, user.correo, user.nombre, user.usuario,  user.estado])
         });
         doc.save(`${title.replace(/\s+/g, '_').toLowerCase()}.pdf`);
     };
