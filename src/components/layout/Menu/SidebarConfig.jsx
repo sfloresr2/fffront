@@ -1,5 +1,5 @@
 import React from 'react'
-import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined, ReceiptOutlined, DescriptionOutlined} from '@mui/icons-material' // Importa los nuevos iconos
+import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined, ReceiptOutlined, DescriptionOutlined, ExitToAppOutlined, ImportContactsOutlined, PlaylistAddCheckOutlined} from '@mui/icons-material' // Importa los nuevos iconos
 
 const sidebarConfig = [
 	{
@@ -25,7 +25,7 @@ const sidebarConfig = [
 	{
 		title: 'Entrada Productos',
 		path: '/app/productos',
-		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+		icon: <ImportContactsOutlined /> // Cambiado a un icono de compras
 	},
 
 
@@ -44,12 +44,12 @@ const sidebarConfig = [
 	{
 		title: 'Salida Productos',
 		path: '/app/salidas',
-		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras dd
+		icon: <ExitToAppOutlined /> // Cambiado a un icono de compras dd
 	},
 	{
 		title: 'Registro Salidas',
 		path: '/app/salidasre',
-		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+		icon: <PlaylistAddCheckOutlined /> // Cambiado a un icono de compras
 	},
 
 	{
