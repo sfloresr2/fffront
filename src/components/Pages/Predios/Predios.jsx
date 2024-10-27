@@ -296,29 +296,22 @@ const Predios = () => {
         doc.text("Reporte de Inventario Vehiculo", 20, 10);// Añade un título al PDF en la posición (20, 10).
         doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
              // Define la cabecera de la tabla con los nombres de los campos.
-            head: [['id', 'placa', 'tipo_vehiculo', 'marca', 'modelo', 'color', 'uso', 'linea', 'chasis', 'serie', 'numero_asientos', 'ejes', 'numero_vin', 'motor', 'cilindros', 'c_c', 'id_proveedor_vehiculo', 'fecha_compra', 'precio_compra', 'precio_vehiculo']],
+            head: [['id', 'placa', 'marca', 'modelo', 'color',  'linea',   'id_proveedor_vehiculo', 'fecha_compra', 'precio_compra']],
            // El cuerpo de la tabla se llena con los datos de la lista de vehículos (usuariosList).
             body: usuariosList.map(product => [
                 product.id,
                 product.placa,
-                product.tipo_vehiculo, 
+                
                 product.marca, 
                 product.modelo,
                 product.color,
-                product.uso,
+                
                 product.linea,
-                product.chasis,
-                product.serie, 
-                product.numero_asientos,
-                product.ejes,
-                product.numero_vin, 
-                product.motor,
-                product.cilindros,
-                product.c_c,
+         
                 product.nombre_proveedor_vehiculo,
                 formatDate(product.fecha_compra), // Formatea la fecha de compra antes de agregarla a la tabla.
                 product.precio_compra, 
-                product.precio_vehiculo,     
+                
             ])
         });
         doc.save('reporte_inventario_vehiculos.pdf');// Guarda el PDF generado con el nombre 'reporte_inventario_vehiculos.pdf'.
@@ -382,7 +375,7 @@ const generatePDFIAA = () => {
     doc.text("Reporte de Vehículos - IAA", 20, 10);// Añade un título al PDF en la posición (20, 10).
     doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
         // Define la cabecera de la tabla con los nombres de los campos relevantes.
-        head: [['ID', 'Placa', 'Tipo vehiculo', 'Marca', 'Modelo', 'Color', 'Uso', 'Linea', 'Chasis', 'Serie', 'Numero asientos', 'Ejes', 'Numero vin', 'Motor', 'Cilindros', 'c_c', 'Proveedor', 'Fecha compra', 'Precio compra', 'Precio vehiculo']],
+        head: [['ID', 'Placa', 'Marca', 'Modelo', 'Color', 'Linea',  'Proveedor', 'Fecha compra', 'Precio compra']],
         // El cuerpo de la tabla se llena con los datos de los vehículos filtrados de IAA.
         body: vehiculosIAA.map(vehicle => [
             vehicle.id, 
@@ -390,20 +383,15 @@ const generatePDFIAA = () => {
             vehicle.marca, 
             vehicle.modelo,
             vehicle.color,
-            vehicle.uso,
+           
             vehicle.linea,
-            vehicle.chasis,
-            vehicle.serie,
-            vehicle.numero_asientos,
-            vehicle.ejes,
-            vehicle.numero_vin, 
-            vehicle.motor,
-            vehicle.cilindros,
-            vehicle.c_c, 
+            
+            
+           
             vehicle.nombre_proveedor_vehiculo,
             formatDate(vehicle.fecha_compra),// Formatea la fecha de compra antes de agregarla a la tabla.
             vehicle.precio_compra, 
-            vehicle.precio_vehiculo
+            
         ])
     });
     doc.save('reporte_vehiculos_IAA.pdf');// Guarda el PDF generado con el nombre 'reporte_vehiculos_IAA.pdf'.
@@ -418,7 +406,7 @@ const generatePDFAutowini = () => {
     doc.text("Reporte de Vehículos - Autowini", 20, 10);// Añade un título al PDF en la posición (20, 10).
     doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
        // Define la cabecera de la tabla con los nombres de los campos relevantes.
-        head: [['ID', 'Placa', 'Tipo vehiculo', 'Marca', 'Modelo', 'Color', 'Uso', 'Linea', 'Chasis', 'Serie', 'Numero asientos', 'Ejes', 'Numero vin', 'Motor', 'Cilindros', 'c_c', 'Proveedor', 'Fecha compra', 'Precio compra', 'Precio vehiculo']],
+        head: [['ID', 'Placa',  'Marca', 'Modelo', 'Color',  'Linea',   'Proveedor', 'Fecha compra', 'Precio compra']],
          // El cuerpo de la tabla se llena con los datos de los vehículos filtrados de Autowini.
         body: vehiculosAutowini.map(vehicle => [
             vehicle.id, 
@@ -426,20 +414,13 @@ const generatePDFAutowini = () => {
             vehicle.marca, 
             vehicle.modelo,
             vehicle.color,
-            vehicle.uso,
+            
             vehicle.linea,
-            vehicle.chasis,
-            vehicle.serie,
-            vehicle.numero_asientos,
-            vehicle.ejes,
-            vehicle.numero_vin, 
-            vehicle.motor,
-            vehicle.cilindros,
-            vehicle.c_c,   
+             
             vehicle.nombre_proveedor_vehiculo,
             formatDate(vehicle.fecha_compra),// Formatea la fecha de compra antes de agregarla a la tabla.
-            vehicle.precio_compra, 
-            vehicle.precio_vehiculo
+            vehicle.precio_compra
+            
         ])
     });
     doc.save('reporte_vehiculos_Autowini.pdf');// Guarda el PDF generado con el nombre 'reporte_vehiculos_Autowini.pdf'.
