@@ -144,6 +144,7 @@ const Vehiculos = () => {
                     <Typography variant="h5">Módulo de Registro de Información de {isEdit ? 'Editar Vehiculo' : 'Compras de Vehiculos'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
+                    {/* Código */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -156,6 +157,7 @@ const Vehiculos = () => {
                             label='Codigo'
                         />
                     </Grid>
+                    {/* Placa */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -168,6 +170,7 @@ const Vehiculos = () => {
                             label='Placa'
                         />
                     </Grid>
+                    {/* Tipo de vehículo */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="tipo_vehiculo">Tipo de Vehículo</InputLabel>
                         <Select
@@ -185,6 +188,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Marca */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="marca">Marca</InputLabel>
                         <Select
@@ -221,6 +225,38 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Modelo (Año) */}
+                    <Grid item xs={12} sm={6}>
+                        <InputLabel htmlFor="modelo">Modelo</InputLabel>
+                        <Select
+                            name="modelo"
+                            value={body.modelo || ''}
+                            onChange={onChange}
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                        >
+                            {years.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    {/* Color */}
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            margin='normal'
+                            name='color'
+                            value={body.color}
+                            onChange={onChange}
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            label='Color'
+                        />
+                    </Grid>
+                    {/* Uso */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="uso">Uso</InputLabel>
                         <Select
@@ -238,6 +274,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Línea */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -250,6 +287,7 @@ const Vehiculos = () => {
                             label='Linea'
                         />
                     </Grid>
+                    {/* Chasis */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -262,6 +300,7 @@ const Vehiculos = () => {
                             label='Chasis'
                         />
                     </Grid>
+                    {/* Serie */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -274,35 +313,7 @@ const Vehiculos = () => {
                             label='Serie'
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="modelo">Año</InputLabel>
-                        <Select
-                            name="modelo"
-                            value={body.modelo || ''}
-                            onChange={onChange}
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                        >
-                            {years.map((year) => (
-                                <MenuItem key={year} value={year}>
-                                    {year}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='color'
-                            value={body.color}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Color'
-                        />
-                    </Grid>
+                    {/* Asientos */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="numero_asientos">Número de Asientos</InputLabel>
                         <Select
@@ -320,6 +331,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Ejes */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="ejes">Ejes</InputLabel>
                         <Select
@@ -337,6 +349,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* VIN */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             margin='normal'
@@ -349,6 +362,20 @@ const Vehiculos = () => {
                             label='Numero de VIN'
                         />
                     </Grid>
+                    {/* Motor */}
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            margin='normal'
+                            name='motor'
+                            value={body.motor}
+                            onChange={onChange}
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            label='Motor'
+                        />
+                    </Grid>
+                    {/* Cilindros */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="cilindros">Cilindros</InputLabel>
                         <Select
@@ -366,20 +393,9 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* C.C */}
                     <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='motor'
-                            value={body.motor}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Motor'
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="c_c">c_c</InputLabel>
+                        <InputLabel htmlFor="c_c">C.C</InputLabel>
                         <Select
                             name="c_c"
                             value={body.c_c || ''}
@@ -395,6 +411,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Proveedor */}
                     <Grid item xs={12} sm={6}>
                         <InputLabel htmlFor="id_proveedor_vehiculo">Proveedor Vehiculo</InputLabel>
                         <Select
@@ -412,6 +429,7 @@ const Vehiculos = () => {
                             ))}
                         </Select>
                     </Grid>
+                    {/* Fecha de Compra */}
                     <Grid item xs={12} sm={6}>
                         <TextField
                             type='date'
@@ -428,6 +446,7 @@ const Vehiculos = () => {
                             }}
                         />
                     </Grid>
+                    {/* Precio Compra */}
                     <Grid item xs={12}>
                         <TextField
                             margin='normal'
@@ -443,6 +462,7 @@ const Vehiculos = () => {
                             }}
                         />
                     </Grid>
+                    {/* Precio Vehiculo */}
                     <Grid item xs={12}>
                         <TextField
                             margin='normal'

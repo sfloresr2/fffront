@@ -14,6 +14,29 @@ const Ventassf = () => {
         precio: "",
     };
 
+    const marcas = [
+        "Italika",
+        "Kia",
+        "Chevrolet",
+        "Hyundai",
+        "Mazda",
+        "Honda",
+        "Ford",
+        "Toyota",
+        "Mitsubishi",
+        "Nissan",
+        "Volkswagen",
+        "Suzuki",
+        "Jeep",
+        "Mercedes-Benz",
+        "BMW",
+        "AUDI",
+        "Isuzu",
+        "Subaru"
+    ];
+
+    const modelos = Array.from({ length: 125 }, (_, i) => (1900 + i).toString());
+    
     const [roles, setRoles] = useState([]);
     const [roless, setRoless] = useState([]);
     const [serviciosDisponibles, setServiciosDisponibles] = useState([]);
@@ -172,29 +195,39 @@ const Ventassf = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    margin='normal'
+                                <InputLabel htmlFor={`marca_${index}`}>Marca</InputLabel>
+                                <Select
                                     name='marca'
                                     value={service.marca}
                                     onChange={(e) => onChangeService(index, e)}
                                     variant='outlined'
                                     size='small'
                                     fullWidth
-                                    label='Marca'
-                                />
+                                >
+                                    {marcas.map((marca) => (
+                                        <MenuItem key={marca} value={marca}>
+                                            {marca}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    margin='normal'
+                                <InputLabel htmlFor={`modelo_${index}`}>Modelo</InputLabel>
+                                <Select
                                     name='modelo'
                                     value={service.modelo}
                                     onChange={(e) => onChangeService(index, e)}
                                     variant='outlined'
                                     size='small'
                                     fullWidth
-                                    label='Modelo'
-                                />
+                                >
+                                    {modelos.map((modelo) => (
+                                        <MenuItem key={modelo} value={modelo}>
+                                            {modelo}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
