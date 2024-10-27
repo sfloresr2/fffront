@@ -273,32 +273,25 @@ const Registrov = () => {
         doc.text("Reporte de Inventario Vehiculo", 20, 10);// Añade un título al PDF en la posición (20, 10).
         doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
              // Define la cabecera de la tabla con los nombres de los campos.
-            head: [['id', 'placa', 'tipo_vehiculo', 'marca', 'modelo', 'color', 'uso', 'linea', 'chasis', 'serie', 'numero_asientos', 'ejes', 'numero_vin', 'motor', 'cilindros', 'c_c', 'id_clientes', 'fecha_venta', 'precio_compra', 'precio_venta']],
+            head: [['id', 'placa', 'marca', 'modelo', 'color',  'linea' , 'id_clientes', 'fecha_venta', 'precio_compra', 'precio_venta']],
            // El cuerpo de la tabla se llena con los datos de la lista de vehículos (usuariosList).
             body: usuariosList.map(product => [
                 product.id,
                 product.placa,
-                product.tipo_vehiculo, 
+                
                 product.marca, 
                 product.modelo,
                 product.color,
-                product.uso,
+               
                 product.linea,
-                product.chasis,
-                product.serie, 
-                product.numero_asientos,
-                product.ejes,
-                product.numero_vin, 
-                product.motor,
-                product.cilindros,
-                product.c_c,
+            
                 product.nombre_clientes,
                 formatDate(product.fecha_venta), // Formatea la fecha de compra antes de agregarla a la tabla.
                 product.precio_compra, 
                 product.precio_venta,     
             ])
         });
-        doc.save('reporte_inventario_vehiculos.pdf');// Guarda el PDF generado con el nombre 'reporte_inventario_vehiculos.pdf'.
+        doc.save('reporte_inventario_vehiculos_vendidos.pdf');// Guarda el PDF generado con el nombre 'reporte_inventario_vehiculos.pdf'.
     };
     
 
