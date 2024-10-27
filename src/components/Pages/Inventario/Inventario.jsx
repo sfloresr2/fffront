@@ -72,6 +72,9 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
         { field: 'nombre', headerName: 'Nombre Producto', width: 220 },// Columna para mostrar el nombre del producto
         { field: 'descripcion', headerName: 'Descripcion', width: 220 },// Columna para mostrar la descripción del producto
         { field: 'nombre_proveedor', headerName: 'Proveedor', width: 220 },// Columna para mostrar el nombre del proveedor del producto
+       
+        /*
+
         {
             // Columna para mostrar la fecha de compra del producto
             field: 'fecha_compra',
@@ -84,6 +87,8 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
                 return fecha.toLocaleDateString('es-ES', options);// Convierte la fecha al formato español 'DD/MM/YYYY'
             }//Fin del valueFormatter
         },//Fin del field de fecha de compra
+
+        */
         
         { field: 'cantidad', headerName: 'Cantidad', width: 220 },// Columna para mostrar la cantidad de productos comprados
 
@@ -238,13 +243,13 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
         const doc = new jsPDF();// Crea una nueva instancia de jsPDF
         doc.text("Reporte de Inventario", 20, 10);// Añade un título en la posición (20, 10) en la página
         doc.autoTable({// Utiliza el plugin autoTable de jsPDF para crear una tabla en el PDF
-            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',  'Fecha Entrada',  'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
+            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',   'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
             body: usuariosList.map(product => [ // El cuerpo de la tabla contiene los datos de la lista de productos 'usuariosList'
                 product.id, // ID del producto
                 product.nombre, // Nombre del producto
                 product.descripcion,// Descripción del producto
                 product.nombre_proveedor,// Nombre del proveedor
-                formatDate(product.fecha_compra),// Fecha de compra (formateada)
+                
                
                 product.cantidad, // Cantidad de productos
                 product.precio,// Precio unitario
@@ -261,13 +266,13 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
         const productosQuimicosDeLaEra = usuariosList.filter(product => product.nombre_proveedor === 'QUIMERA QuimicosDeLaEra');// Filtra los productos que tienen como proveedor "QuimicosDeLaEra"
         doc.text("Reporte de Productos - QUIMERA QuimicosDeLaEra", 20, 10);// Añade el título del reporte en la posición (20, 10) en la página
         doc.autoTable({// Utiliza el plugin autoTable de jsPDF para crear la tabla en el PDF
-            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',  'Fecha Entrada',  'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
+            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',   'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
             body: productosQuimicosDeLaEra.map(product => [ // El cuerpo de la tabla contiene los datos filtrados de "QuimicosDeLaEra"
                 product.id, // ID del producto
                 product.nombre, // Nombre del producto
                 product.descripcion,// Descripción del producto
                 product.nombre_proveedor,// Nombre del proveedor
-                formatDate(product.fecha_compra),// Fecha de compra (formateada)
+                
                 
                 product.cantidad, // Cantidad de productos
                 product.precio,// Precio unitario
@@ -284,13 +289,13 @@ const Inventario = () => {// Definición del componente funcional 'Inventario'
         const productosFerkica = usuariosList.filter(product => product.nombre_proveedor === 'Quimicos FERKICA');// Filtra los productos que tienen como proveedor "Quimicos FERKICA"
         doc.text("Reporte de Productos - Quimicos FERKICA", 20, 10);// Añade el título del reporte en la posición (20, 10) en la página
         doc.autoTable({ // Utiliza el plugin autoTable de jsPDF para crear la tabla en el PDF
-            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',  'Fecha Entrada', 'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
+            head: [['ID', 'Nombre', 'Descripción',  'Proveedor',   'Cantidad', 'Precio', 'Subtotal']],// Definición de la cabecera de la tabla con los nombres de las columnas
             body: productosFerkica.map(product => [// El cuerpo de la tabla contiene los datos filtrados de "Quimicos FERKICA"
                 product.id, // ID del producto
                 product.nombre, // Nombre del producto
                 product.descripcion,// Descripción del producto
                 product.nombre_proveedor,// Nombre del proveedor
-                formatDate(product.fecha_compra),// Fecha de compra (formateada)
+                
                 
                 product.cantidad, // Cantidad de productos
                 product.precio,// Precio unitario
