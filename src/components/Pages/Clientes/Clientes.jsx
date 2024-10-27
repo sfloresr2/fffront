@@ -365,7 +365,7 @@ const Clientes = () => { // Define el componente funcional 'Proimpo' usando una 
                 <ToastAutoHide message={mensaje} />{/* Componente para mostrar mensajes temporales */}
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Panel de Control de Clientes de Vehiculos</Typography>
+                        <Typography variant="h5">Panel de Control de Clientes</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
