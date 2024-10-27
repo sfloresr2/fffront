@@ -88,7 +88,7 @@ const sidebarConfig = [
 	},
 
 	{
-		title: 'Clientes Vehiculos',
+		title: 'Clientes',
 		path: '/app/clientes',
 		icon: <ContactsOutlined /> // Cambiado a un icono de inventario
 	},
