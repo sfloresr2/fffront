@@ -1,5 +1,5 @@
 import React from 'react'
-import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined, ReceiptOutlined} from '@mui/icons-material' // Importa los nuevos iconos
+import { PersonOutlined, HomeOutlined, ShoppingCartOutlined, Inventory2Outlined, DirectionsCarOutlined, LocalCarWashOutlined, RvHookupOutlined, DriveEtaOutlined, CarRepairOutlined, CommuteOutlined, CleaningServicesOutlined, SanitizerOutlined, SoapOutlined, PeopleOutlined, AddShoppingCartOutlined, BusinessOutlined, ContactPhoneOutlined, ContactsOutlined, BarChartOutlined, AssessmentOutlined, MonetizationOnOutlined, AttachMoneyOutlined, ReceiptOutlined, DescriptionOutlined} from '@mui/icons-material' // Importa los nuevos iconos
 
 const sidebarConfig = [
 	{
@@ -30,9 +30,9 @@ const sidebarConfig = [
 
 
 	{
-		title: 'Detalles',
+		title: 'Detalles Compras',
 		path: '/app/detalles',
-		icon: <CleaningServicesOutlined /> // Cambiado a un icono de compras
+		icon: <DescriptionOutlined /> // Cambiado a un icono de compras
 	},
 
 	
