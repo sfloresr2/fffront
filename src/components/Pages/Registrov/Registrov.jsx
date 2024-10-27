@@ -1,140 +1,88 @@
-import React, { useState, useEffect } from 'react';// Importa React y los hooks useState y useEffect, que permiten manejar estados y efectos secundarios en componentes funcionales.
-import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Container, Typography, Grid, Box, Button, Stack, IconButton, Divider, MenuItem, Select, InputLabel } from '@mui/material';// Importa varios componentes de la librería @mui/material (Material-UI), que son utilizados para construir la interfaz de usuario.
-import ApiRequest from '../../../helpers/axiosInstances';// Importa la instancia de axios personalizada para realizar solicitudes HTTP.
-import { AddOutlined, EditOutlined, DeleteOutline, PictureAsPdfOutlined } from '@mui/icons-material'; // Importa varios íconos de la librería @mui/icons-material, que se usan para representar acciones visualmente.
-import Page from '../../common/Page';// Componente común de página para estructurar el layout
-import ToastAutoHide from '../../common/ToastAutoHide';// Componente que muestra notificaciones que se ocultan automáticamente
-import CommonTable from '../../common/CommonTable';// Componente de tabla reutilizable para mostrar datos
-import jsPDF from 'jspdf'; // Importa la librería jsPDF, que permite generar archivos PDF desde JavaScript.
-import 'jspdf-autotable'; // Importa el plugin "autotable" de jsPDF, que facilita la creación de tablas dentro de un PDF.
-
-//ventas
+import React, { useState, useEffect } from 'react';
+import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Container, Typography, Grid, Box, Button, Stack, IconButton, Divider, MenuItem, Select, InputLabel } from '@mui/material';
+import ApiRequest from '../../../helpers/axiosInstances';
+import { AddOutlined, EditOutlined, DeleteOutline, PictureAsPdfOutlined } from '@mui/icons-material';
+import Page from '../../common/Page';
+import ToastAutoHide from '../../common/ToastAutoHide';
+import CommonTable from '../../common/CommonTable';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const Registrov = () => {
-
-
-    const initialState = {// Define el estado inicial del componente Predios
-        id: "",	// Identificador único del vehículo (probablemente una clave primaria).
+    const initialState = {
+        id: "",
         codigo: "",
-        placa: "",// Número de placa del vehículo.
-        tipo_vehiculo:"",// Tipo de vehículo (automóvil, motocicleta, etc.).
-        marca: "",	// Marca del vehículo (por ejemplo, Toyota, Ford).
-        modelo: "",	// Modelo del vehículo (por ejemplo, Corolla, Mustang).
-        color: "",// Color del vehículo.
-        uso:"",// Tipo de uso del vehículo (particular, comercial, etc.).
-        linea:"",// Línea o submodelo del vehículo.
-        chasis:"",// Número de chasis del vehículo.
-        serie:"",// Número de serie del vehículo (similar al VIN en algunos casos).
-        numero_asientos: "",// Cantidad de asientos del vehículo.
-        ejes:"",// Número de ejes del vehículo.
-        numero_vin: "",// Número de Identificación Vehicular (VIN), único para cada vehículo.
-        motor:"",// Número o identificación del motor del vehículo.
-        cilindros:"",// Número de cilindros del motor.
-        c_c:"",	// Cilindrada o capacidad cúbica del motor.
-        id_clientes: "",// Identificación del proveedor o vendedor del vehículo.
-        fecha_venta: "",	// Fecha en que el vehículo fue adquirido.
-        precio_compra: "",	// Precio de compra del vehículo.
-        precio_venta: ""// Valor estimado o actual del vehículo.
+        placa: "",
+        tipo_vehiculo:"",
+        marca: "",
+        modelo: "",
+        color: "",
+        uso:"",
+        linea:"",
+        chasis:"",
+        serie:"",
+        numero_asientos: "",
+        ejes:"",
+        numero_vin: "",
+        motor:"",
+        cilindros:"",
+        c_c:"",
+        id_clientes: "",
+        fecha_venta: "",
+        precio_compra: "",
+        precio_venta: ""
     };
-
-
 
     const formatDate = (date) => {
-        if (!date) return '';// Si no se proporciona una fecha (o la fecha es inválida), devuelve una cadena vacía.
-        const d = new Date(date);// Convierte la fecha proporcionada en un objeto de tipo Date.
-        // Obtiene el mes de la fecha, sumándole 1 (porque los meses en JavaScript se indexan desde 0, es decir, enero = 0).
-        // Se añade un '0' al inicio para asegurarse de que siempre tenga dos dígitos (por ejemplo, '03' para marzo).
+        if (!date) return '';
+        const d = new Date(date);
         const month = ('0' + (d.getMonth() + 1)).slice(-2);
-        const day = ('0' + d.getDate()).slice(-2);// Obtiene el día del mes y le añade un '0' al inicio para formatearlo con dos dígitos.
-        return d.getFullYear() + '-' + month + '-' + day;// Devuelve la fecha formateada en el formato 'YYYY-MM-DD', que es el formato de fecha estándar ISO 8601.
+        const day = ('0' + d.getDate()).slice(-2);
+        return d.getFullYear() + '-' + month + '-' + day;
     };
 
-
-
     const [roles, setRoles] = useState([]); 
-    // Define un estado llamado 'roles' con un array vacío como valor inicial.
-    // 'roles' probablemente contendrá una lista de roles (por ejemplo, roles de usuario o proveedores).
-    // 'setRoles' es la función que permite actualizar el estado 'roles'.   
     const [usuariosList, setUsuariosList] = useState([]);
-    // Define un estado llamado 'usuariosList' que inicialmente es un array vacío.
-    // 'usuariosList' contendrá una lista de usuarios. 
-    // 'setUsuariosList' permite actualizar la lista de usuarios cuando sea necesario.
     const [body, setBody] = useState(initialState);
-    // 'body' es el estado que guarda los datos del formulario, inicializado con 'initialState'.
-    // 'initialState' es el objeto previamente definido que contiene la estructura de un vehículo con valores iniciales vacíos.
-    // 'setBody' se utiliza para actualizar el estado 'body', generalmente cuando el usuario llena o edita el formulario.
     const [openDialog, setOpenDialog] = useState(false);
-    // 'openDialog' es un booleano que controla si un diálogo (modal) está abierto o cerrado.
-    // Inicialmente está en 'false' (cerrado). Se usa 'setOpenDialog' para abrir o cerrar el diálogo.
     const [isEdit, setIsEdit] = useState(false);
-    // 'isEdit' es un booleano que indica si el formulario está en modo de edición o creación.
-    // Si es 'true', el formulario se encuentra en modo edición; si es 'false', está en modo de creación de un nuevo elemento.
-    // 'setIsEdit' cambia este valor, dependiendo de la acción que se esté realizando.
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null });
-    // 'mensaje' es un estado que almacena los detalles de un mensaje o notificación.
-    // Está inicializado con un objeto que contiene:
-    // - 'ident': posiblemente un identificador para el mensaje.
-    // - 'message': el contenido o texto del mensaje.
-    // - 'type': el tipo de mensaje (por ejemplo, error, éxito, advertencia).
-    // 'setMensaje' permite actualizar estos valores, por ejemplo, después de una operación exitosa o fallida
     const [idDelete, setIdDelete] = useState(null);
-    // 'idDelete' almacena el ID del elemento que se quiere eliminar.
-    // Se inicializa como 'null' y se actualiza con el ID correspondiente cuando se quiere eliminar un elemento.
-    // 'setIdDelete' se usa para asignar el ID del elemento que se desea eliminar.
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
-    // 'openDialogDelete' es un booleano que controla si se abre o cierra un diálogo de confirmación de eliminación.
-    // Inicialmente está en 'false' (cerrado). Se usa 'setOpenDialogDelete' para abrir o cerrar el diálogo de eliminación.
 
-
-
-    // Función que obtiene la lista de productos
     const init = async () => {
-        // Realiza una solicitud GET a la API para obtener la lista de vehículos.
-        // Usa la instancia personalizada de axios (`ApiRequest()`) para hacer la solicitud al endpoint '/vehiculos'.
         const { data } = await ApiRequest().get('/vehiculosventas');
-        // Una vez que se obtiene la respuesta, se extrae la propiedad `data` (que contiene la lista de vehículos).
-        // Se actualiza el estado 'usuariosList' con los datos obtenidos de la API.
         setUsuariosList(data);
     };
 
-
-
-    // Función que obtiene la lista de proveedores
     const fetchProveedores = async () => {
         try {  
-            const { data } = await ApiRequest().get('/clientesvvv'); // Realiza una solicitud GET a la API para obtener la lista de proveedores
-            setRoles(data); // Actualiza el estado 'roles' con la lista de proveedores obtenida de la API
+            const { data } = await ApiRequest().get('/clientesvvv');
+            setRoles(data);
         } catch (error) {
-            console.error('Error al obtener la lista de proveedores:', error); // Si ocurre un error durante la solicitud, se captura aquí y se muestra un mensaje en la consola
+            console.error('Error al obtener la lista de proveedores:', error);
         }
     };
 
-
-
     const columns = [
-        { field: 'id', headerName: 'ID', width: 120 }, // Columna que muestra el ID (código único) del vehículo. Tiene un ancho de 120 píxeles.
+        { field: 'id', headerName: 'ID', width: 120 },
         { field: 'codigo', headerName: 'Codigo', width: 120 },
-        { field: 'placa', headerName: 'Placa', width: 220 }, // Columna que muestra la placa del vehículo. El ancho de la columna es de 220 píxeles.
-        { field: 'tipo_vehiculo', headerName: 'Tipo vehiculo', width: 220 }, // Columna que muestra el tipo de vehículo (por ejemplo, auto, moto, camión). Ancho de 220 píxeles.
-        { field: 'marca', headerName: 'Marca', width: 220 }, // Columna que muestra la marca del vehículo. Tiene un ancho de 220 píxeles.
-        { field: 'modelo', headerName: 'Modelo', width: 220 },// Columna que muestra el modelo del vehículo. Ancho de 220 píxeles.
-        { field: 'color', headerName: 'Color', width: 220 },// Columna que muestra el color del vehículo. Ancho de 220 píxeles.
-        { field: 'uso', headerName: 'Uso', width: 220 }, // Columna que muestra el tipo de uso del vehículo (por ejemplo, particular, comercial). Ancho de 220 píxeles.
-        { field: 'linea', headerName: 'Linea', width: 220 },// Columna que muestra la línea del vehículo (submodelo o categoría). Ancho de 220 píxeles.
-        { field: 'chasis', headerName: 'Chasis', width: 220 },// Columna que muestra el número de chasis del vehículo. Ancho de 220 píxeles.
-        { field: 'serie', headerName: 'Serie', width: 220 }, // Columna que muestra el número de serie del vehículo. Ancho de 220 píxeles.
-        { field: 'numero_asientos', headerName: 'Numero de Asientos', width: 220 },// Columna que muestra el número de asientos del vehículo. Ancho de 220 píxeles.
-        { field: 'ejes', headerName: 'Ejes', width: 220 },// Columna que muestra el número de ejes del vehículo. Ancho de 220 píxeles.
-        { field: 'numero_vin', headerName: 'Numero de VIN', width: 220 },// Columna que muestra el número de identificación del vehículo (VIN). Ancho de 220 píxeles.
-        { field: 'motor', headerName: 'Motor', width: 220 },// Columna que muestra el número del motor del vehículo. Ancho de 220 píxeles.
-        { field: 'cilindros', headerName: 'Cilindros', width: 220 },// Columna que muestra el número de cilindros del motor del vehículo. Ancho de 220 píxeles.
-        { field: 'c_c', headerName: 'C_C', width: 220 },// Columna que muestra la cilindrada (capacidad cúbica) del motor del vehículo. Ancho de 220 píxeles.
-        { field: 'nombre_clientes', headerName: 'Clientes de Vehiculos', width: 220 },// Columna que muestra el nombre del proveedor del vehículo. Ancho de 220 píxeles.
-        // Columna que muestra la fecha de compra del vehículo.
-        // - 'field': 'fecha_compra' hace referencia al campo 'fecha_compra' en los datos del vehículo.
-        // - 'headerName': 'Fecha Compra' es el encabezado que se verá en la tabla.
-        // - 'valueFormatter': es una función que formatea la fecha de compra a un formato de fecha local en español (dd/mm/aaaa).
-        //   Usa el método `toLocaleDateString` para mostrar la fecha con formato numérico para día, mes y año.
+        { field: 'placa', headerName: 'Placa', width: 220 },
+        { field: 'tipo_vehiculo', headerName: 'Tipo vehiculo', width: 220 },
+        { field: 'marca', headerName: 'Marca', width: 220 },
+        { field: 'modelo', headerName: 'Modelo', width: 220 },
+        { field: 'color', headerName: 'Color', width: 220 },
+        { field: 'uso', headerName: 'Uso', width: 220 },
+        { field: 'linea', headerName: 'Linea', width: 220 },
+        { field: 'chasis', headerName: 'Chasis', width: 220 },
+        { field: 'serie', headerName: 'Serie', width: 220 },
+        { field: 'numero_asientos', headerName: 'Numero de Asientos', width: 220 },
+        { field: 'ejes', headerName: 'Ejes', width: 220 },
+        { field: 'numero_vin', headerName: 'Numero de VIN', width: 220 },
+        { field: 'motor', headerName: 'Motor', width: 220 },
+        { field: 'cilindros', headerName: 'Cilindros', width: 220 },
+        { field: 'c_c', headerName: 'C_C', width: 220 },
+        { field: 'nombre_clientes', headerName: 'Clientes de Vehiculos', width: 220 },
         {
             field: 'fecha_venta',
             headerName: 'Fecha Venta',
@@ -145,285 +93,172 @@ const Registrov = () => {
                 return fecha.toLocaleDateString('es-ES', options);
             }
         },
-
-
         {
             field: 'precio_compra',
             headerName: 'Precio Compra',
             width: 220,
-            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}`
         },
-
         {
             field: 'precio_venta',
             headerName: 'Precio Venta',
             width: 220,
-            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}` // Formatear el precio
+            renderCell: (params) => `Q. ${parseFloat(params.value).toFixed(2)}`
         }
-
-
-
-   
-        
-
-
-       
-       
-       
-    
     ];
-
-
 
     const onDelete = async () => {
         try {
-            const { data } = await ApiRequest().post('/eliminar_vehicv', { id: idDelete });// Se realiza una solicitud POST a la API para eliminar un vehículo, enviando el ID del vehículo a eliminar.
-            setMensaje({// Si la eliminación es exitosa, se muestra un mensaje de éxito en una notificación.
-                ident: new Date().getTime(),// Genera un identificador único basado en la fecha actual.
-                message: data.message,// Mensaje que llega desde el servidor, probablemente indicando que el vehículo fue eliminado exitosamente.
-                type: 'success'// Tipo de mensaje es 'success', lo que indica que es una notificación de éxito.
-            });
-            handleDialogDelete();// Cierra el diálogo de confirmación de eliminación.
-            init();// Refresca la lista de vehículos, llamando nuevamente a la función init.
-        } catch ({ response }) { // Si ocurre un error en la solicitud, se captura el mensaje de error desde la respuesta del servidor.
+            const { data } = await ApiRequest().post('/eliminar_vehicv', { id: idDelete });
             setMensaje({
-                ident: new Date().getTime(),// Identificador único para el mensaje de error.
-                message: response.data.sqlMessage,// Mensaje de error específico que llega del servidor (posiblemente un error de SQL).
-                type: 'error'// Tipo de mensaje es 'error', lo que indica que es una notificación de error.
+                ident: new Date().getTime(),
+                message: data.message,
+                type: 'success'
+            });
+            handleDialogDelete();
+            init();
+        } catch ({ response }) {
+            setMensaje({
+                ident: new Date().getTime(),
+                message: response.data.sqlMessage,
+                type: 'error'
             });
         }
     };
 
-
-
-    const handleDialog = () => {
-    // Cambia el estado de 'openDialog' entre verdadero y falso, 
-    // lo que controla la visibilidad del diálogo en la interfaz de usuario.
-        setOpenDialog(prev => !prev);
-    };
-
-
-
-    const handleDialogDelete = () => {
-    // Cambia el estado de 'openDialogDelete' entre verdadero y falso,
-    // lo que controla la visibilidad del diálogo de confirmación de eliminación en la interfaz de usuario.
-        setOpenDialogDelete(prev => !prev);
-    };
-
-
+    const handleDialog = () => setOpenDialog(prev => !prev);
+    const handleDialogDelete = () => setOpenDialogDelete(prev => !prev);
 
     const onChange = ({ target }) => {
-        const { name, value } = target;// Desestructura 'target' del evento, que contiene información sobre el input que ha cambiado.
-        setBody({// Actualiza el estado 'body' al agregar o modificar el campo correspondiente.
-            ...body,// Mantiene las propiedades actuales del estado 'body'.
-            [name]: value// Actualiza el campo específico basado en el nombre del input.
+        const { name, value } = target;
+        setBody({
+            ...body,
+            [name]: value
         });
     };
-
-
 
     const onSubmit = async () => {
         try {
-            const { data } = await ApiRequest().post('/guardar_vehicv', body);  // Realiza una solicitud POST a la API para guardar un nuevo vehículo, enviando el objeto 'body' como datos.
-            handleDialog();// Cierra el diálogo de formulario después de la operación.
-            setBody(initialState);// Reinicia el estado 'body' a su valor inicial para limpiar el formulario.
-            setMensaje({ // Muestra un mensaje de éxito al usuario, indicando que el vehículo fue guardado correctamente.
-                ident: new Date().getTime(),// Genera un identificador único basado en la fecha actual.
-                message: data.message,// Mensaje de éxito proporcionado por la respuesta de la API.
-                type: 'success'// Tipo de mensaje es 'success', indicando una operación exitosa.
+            const { data } = await ApiRequest().post('/guardar_vehicv', body);
+            handleDialog();
+            setBody(initialState);
+            setMensaje({ 
+                ident: new Date().getTime(),
+                message: data.message,
+                type: 'success'
             });
-            init();// Refresca la lista de vehículos llamando a la función init.
-            setIsEdit(false);// Resetea el estado 'isEdit' a 'false', indicando que no se está editando un vehículo.
+            init();
+            setIsEdit(false);
         } catch ({ response }) {
-            setMensaje({// Si ocurre un error durante la solicitud, se captura y se muestra un mensaje de error.
-                ident: new Date().getTime(),// Genera un identificador único para el mensaje de error.
-                message: response.data.sqlMessage,// Mensaje de error desde la respuesta del servidor.
-                type: 'error'// Tipo de mensaje es 'error', indicando una operación fallida.
+            setMensaje({
+                ident: new Date().getTime(),
+                message: response.data.sqlMessage,
+                type: 'error'
             });
         }
     };
-
-
 
     const onEdit = async () => {
         try {
-            const { data } = await ApiRequest().post('/editar_vehicv', body); // Realiza una solicitud POST a la API para editar un vehículo existente, enviando el objeto 'body' como datos.
-            handleDialog();// Cierra el diálogo de formulario después de la operación.
-            setBody(initialState); // Reinicia el estado 'body' a su valor inicial para limpiar el formulario.
-            setMensaje({// Muestra un mensaje de éxito al usuario, indicando que el vehículo fue editado correctamente.
-                ident: new Date().getTime(),// Genera un identificador único basado en la fecha actual.
-                message: data.message,// Mensaje de éxito proporcionado por la respuesta de la API.
-                type: 'success'// Tipo de mensaje es 'success', indicando una operación exitosa.
+            const { data } = await ApiRequest().post('/editar_vehicv', body);
+            handleDialog();
+            setBody(initialState);
+            setMensaje({
+                ident: new Date().getTime(),
+                message: data.message,
+                type: 'success'
             });
-            init();// Refresca la lista de vehículos llamando a la función init.
+            init();
         } catch ({ response }) {
-            setMensaje({// Si ocurre un error durante la solicitud, se captura y se muestra un mensaje de error.
-                ident: new Date().getTime(),// Genera un identificador único para el mensaje de error.
-                message: response.data.sqlMessage,// Mensaje de error desde la respuesta del servidor.
-                type: 'error'// Tipo de mensaje es 'error', indicando una operación fallida.
+            setMensaje({
+                ident: new Date().getTime(),
+                message: response.data.sqlMessage,
+                type: 'error'
             });
         }
     };
 
-
-
-    // Función para generar el reporte PDF con todos los vehiculos
     const generatePDF = () => {
-        const doc = new jsPDF();// Crea una nueva instancia de jsPDF, que se usará para generar el PDF.
-        doc.text("Reporte de Inventario Vehiculo", 20, 10);// Añade un título al PDF en la posición (20, 10).
-        doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
-             // Define la cabecera de la tabla con los nombres de los campos.
-            head: [['id', 'placa', 'marca', 'modelo', 'color',  'linea' , 'id_clientes', 'fecha_venta', 'precio_compra', 'precio_venta']],
-           // El cuerpo de la tabla se llena con los datos de la lista de vehículos (usuariosList).
+        const doc = new jsPDF();
+        doc.text("Reporte de Vehiculos vendidos", 20, 10);
+        doc.autoTable({
+            head: [['id', 'placa', 'marca', 'modelo', 'color', 'linea', 'id_clientes', 'fecha_venta', 'precio_compra', 'precio_venta']],
             body: usuariosList.map(product => [
                 product.id,
                 product.placa,
-                
                 product.marca, 
                 product.modelo,
                 product.color,
-               
                 product.linea,
-            
                 product.nombre_clientes,
-                formatDate(product.fecha_venta), // Formatea la fecha de compra antes de agregarla a la tabla.
+                formatDate(product.fecha_venta),
                 product.precio_compra, 
-                product.precio_venta,     
+                product.precio_venta,
             ])
         });
-        doc.save('reporte_inventario_vehiculos_vendidos.pdf');// Guarda el PDF generado con el nombre 'reporte_inventario_vehiculos.pdf'.
+        doc.save('reporte_inventario_vehiculos_vendidos.pdf');
     };
-    
 
-
-  //REPORTES QUE NO SE UTILIZARON
-  // Función para generar el reporte de productos de "QuimicosDeLaEra"
-  const generatePDFQuimicosDeLaEra = () => {
-    const doc = new jsPDF();
-    const productosQuimicosDeLaEra = usuariosList.filter(product => product.nombre_proveedor === 'QuimicosDeLaEra');
-    doc.text("Reporte de Productos - IAA", 20, 10);
-    doc.autoTable({
-        head: [['ID', 'Nombre', 'Descripción', 'Cantidad', 'Precio', 'Proveedor', 'Fecha Compra', 'Fecha Vencimiento', 'Numero Factura']],
-        body: productosQuimicosDeLaEra.map(product => [
-            product.id, 
-            product.nombre, 
-            product.descripcion, 
-            product.cantidad, 
-            product.precio, 
-            product.nombre_proveedor, 
-            formatDate(product.fecha_compra), 
-            formatDate(product.fecha_vencimiento), 
-            product.numero_factura
-        ])
-    });
-    doc.save('reporte_quimicosdelaera.pdf');
-};
-
-
-
-    // Función para generar el reporte de productos de "Quimicos FERKICA"
-    const generatePDFFerkica = () => {
+    const generateContractPDF = (vehicle) => {
         const doc = new jsPDF();
-        const productosFerkica = usuariosList.filter(product => product.nombre_proveedor === 'Quimicos FERKICA');
-        doc.text("Reporte de Productos - Quimicos FERKICA", 20, 10);
+        doc.setFontSize(16);
+        doc.text("Contrato de Compra-Venta de Vehículo", 20, 20);
+        doc.setFontSize(12);
+        doc.text(`IMPORTADORA FF`, 20, 30);
+        doc.text(`Vendedor: Francisco Flores`, 20, 40);
+        doc.text(`Comprador: ${vehicle.nombre_clientes}`, 20, 50);
+        doc.text(`Fecha de Venta: ${formatDate(vehicle.fecha_venta)}`, 20, 60);
+        doc.text("Detalles del Vehículo:", 20, 80);
         doc.autoTable({
-            head: [['ID', 'Nombre', 'Descripción', 'Cantidad', 'Precio', 'Proveedor', 'Fecha Compra', 'Fecha Vencimiento', 'Numero Factura']],
-            body: productosFerkica.map(product => [
-                product.id, 
-                product.nombre, 
-                product.descripcion, 
-                product.cantidad, 
-                product.precio, 
-                product.nombre_proveedor, 
-                formatDate(product.fecha_compra), 
-                formatDate(product.fecha_vencimiento), 
-                product.numero_factura
-            ])
+            startY: 90,
+            head: [['Placa', 'Marca', 'Modelo', 'Color', 'Tipo de Vehículo', 'Número de VIN']],
+            body: [[
+                vehicle.placa, 
+                vehicle.marca, 
+                vehicle.modelo, 
+                vehicle.color, 
+                vehicle.tipo_vehiculo, 
+                vehicle.numero_vin
+            ]]
         });
-        doc.save('reporte_quimicos_ferkica.pdf');
+        doc.text("Información Financiera:", 20, doc.lastAutoTable.finalY + 20);
+        doc.autoTable({
+            startY: doc.lastAutoTable.finalY + 30,
+            head: [[ 'Precio Venta']],
+            body: [[
+                 
+                `Q. ${parseFloat(vehicle.precio_venta).toFixed(2)}`
+            ]]
+        });
+
+        doc.text("Reunidos vendedor y comprador en la fecha del encabezamiento, manifiestan haber acordado", 20, 160);
+        doc.text("formalizar en este documento CONTRATO DE COMPRAVENTA del vehículo automóvil que se", 20, 165);
+        doc.text("especifica, en las siguientes condiciones:", 20, 170);
+        doc.text("1) El vendedor vende al comprador el vehículo de su propiedad anteriormente ", 20, 180);
+        doc.text("especificado por la cantidad especificada anteriormente, sin incluir los ", 20, 185);
+        doc.text("impuestos correspondientes, que serán a cargo del comprador.", 20, 190);
+        doc.text("2) El vendedor declara que no pesa sobre el vehículo ninguna carga o gravamen ", 20, 200);
+        doc.text("ni impuesto, deuda o sanción pendientes de abono en la fecha de la firma de ", 20, 205);
+        doc.text("este contrato, comprometiéndose en caso contrario a regularizar tal situación ", 20, 210);
+        doc.text("a su exclusivo cargo.", 20, 215);
+        doc.text("3) El vendedor se compromete a facilitar los distintos documentos relativos ", 20, 225);
+        doc.text("al vehículo, así como a firmar cuantos documentos aparte de éste sean necesarios ", 20, 230);
+        doc.text("para que el vehículo quede correctamente inscrito a nombre del comprador en los", 20, 235);
+        doc.text("correspondientes organismos públicos, siendo todos los gastos a cargo del comprador.", 20, 240);
+        doc.text("4) Una vez realizada la correspondiente transferencia en Tráfico, el vendedor entregará ", 20, 250);
+        doc.text("materialmente al comprador la posesión del vehículo, haciéndose el comprador cargo de ", 20, 255);
+        doc.text("cuantas responsabilidades puedan contraerse por la propiedad del vehículo y su tenencia y ", 20, 260);
+        doc.text("uso a partir de dicho momento de la entrega.", 20, 265);
+      
+        doc.text("Firma Vendedor                                                          Firma Comprador", 20, 295);
+        
+        doc.save(`contrato_vehiculo_${vehicle.placa}.pdf`);
     };
 
-
-
-    // Función para generar el reporte de productos del proveedor IAA
-const generatePDFIAA = () => {
-    const doc = new jsPDF();// Crea una nueva instancia de jsPDF para generar el PDF.
-    const vehiculosIAA = usuariosList.filter(product => product.nombre_proveedor_vehiculo === 'IAA');// Filtra la lista de usuarios para obtener solo los vehículos del proveedor 'IAA'.
-    doc.text("Reporte de Vehículos - IAA", 20, 10);// Añade un título al PDF en la posición (20, 10).
-    doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
-        // Define la cabecera de la tabla con los nombres de los campos relevantes.
-        head: [['ID', 'Placa', 'Tipo vehiculo', 'Marca', 'Modelo', 'Color', 'Uso', 'Linea', 'Chasis', 'Serie', 'Numero asientos', 'Ejes', 'Numero vin', 'Motor', 'Cilindros', 'c_c', 'Proveedor', 'Fecha venta', 'Precio compra', 'Precio venta']],
-        // El cuerpo de la tabla se llena con los datos de los vehículos filtrados de IAA.
-        body: vehiculosIAA.map(vehicle => [
-            vehicle.id, 
-            vehicle.placa,
-            vehicle.marca, 
-            vehicle.modelo,
-            vehicle.color,
-            vehicle.uso,
-            vehicle.linea,
-            vehicle.chasis,
-            vehicle.serie,
-            vehicle.numero_asientos,
-            vehicle.ejes,
-            vehicle.numero_vin, 
-            vehicle.motor,
-            vehicle.cilindros,
-            vehicle.c_c, 
-            vehicle.nombre_proveedor_vehiculo,
-            formatDate(vehicle.fecha_venta),// Formatea la fecha de compra antes de agregarla a la tabla.
-            vehicle.precio_compra, 
-            vehicle.precio_venta
-        ])
-    });
-    doc.save('reporte_vehiculos_IAA.pdf');// Guarda el PDF generado con el nombre 'reporte_vehiculos_IAA.pdf'.
-};
-
-
-
-// Función para generar el reporte de productos del proveedor Autowini
-const generatePDFAutowini = () => {
-    const doc = new jsPDF();// Crea una nueva instancia de jsPDF para generar el PDF.
-    const vehiculosAutowini = usuariosList.filter(product => product.nombre_proveedor_vehiculo === 'Autowini');// Filtra la lista de usuarios para obtener solo los vehículos del proveedor 'Autowini'.
-    doc.text("Reporte de Vehículos - Autowini", 20, 10);// Añade un título al PDF en la posición (20, 10).
-    doc.autoTable({// Utiliza el plugin autotable para agregar una tabla al PDF.
-       // Define la cabecera de la tabla con los nombres de los campos relevantes.
-        head: [['ID', 'Placa', 'Tipo vehiculo', 'Marca', 'Modelo', 'Color', 'Uso', 'Linea', 'Chasis', 'Serie', 'Numero asientos', 'Ejes', 'Numero vin', 'Motor', 'Cilindros', 'c_c', 'Proveedor', 'Fecha venta', 'Precio compra', 'Precio venta']],
-         // El cuerpo de la tabla se llena con los datos de los vehículos filtrados de Autowini.
-        body: vehiculosAutowini.map(vehicle => [
-            vehicle.id, 
-            vehicle.placa,
-            vehicle.marca, 
-            vehicle.modelo,
-            vehicle.color,
-            vehicle.uso,
-            vehicle.linea,
-            vehicle.chasis,
-            vehicle.serie,
-            vehicle.numero_asientos,
-            vehicle.ejes,
-            vehicle.numero_vin, 
-            vehicle.motor,
-            vehicle.cilindros,
-            vehicle.c_c,   
-            vehicle.nombre_proveedor_vehiculo,
-            formatDate(vehicle.fecha_venta),// Formatea la fecha de compra antes de agregarla a la tabla.
-            vehicle.precio_compra, 
-            vehicle.precio_venta
-        ])
-    });
-    doc.save('reporte_vehiculos_Autowini.pdf');// Guarda el PDF generado con el nombre 'reporte_vehiculos_Autowini.pdf'.
-};
-
-
-
-    // Al cargar el componente, obtenemos los productos y proveedores
     useEffect(() => {
-        init();// Llama a la función init para obtener la lista de vehículos.
-        fetchProveedores(); // Carga los proveedores a través de la función fetchProveedores.
-    }, []);// La lista vacía [] como segundo argumento asegura que esto solo se ejecute una vez al montar el componente.
-
-
+        init();
+        fetchProveedores();
+    }, []);
 
     return (
         <>
@@ -434,7 +269,7 @@ const generatePDFAutowini = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant='text' color='primary' onClick={handleDialogDelete}>Anular Eliminacion</Button>
-                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Elminacion</Button>
+                    <Button variant='contained' color='primary' onClick={onDelete}>Confirmar Eliminacion</Button>
                 </DialogActions>
             </Dialog>
             
@@ -442,310 +277,7 @@ const generatePDFAutowini = () => {
                 <DialogTitle>{isEdit ? 'Formulario de Edicion Vehiculo Vendido' : 'Formulario de Registro de Venta de Vehiculo'}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='codigo'
-                            value={body.codigo}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Codigo'
-                        />
-                    </Grid>
-
-                    
-                    
-                    
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='placa'
-                            value={body.placa}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Placa'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='tipo_vehiculo'
-                            value={body.tipo_vehiculo}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Tipo vehiculo'
-                        />
-                    </Grid>
-
-
-                    
-                    
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='marca'
-                            value={body.marca}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Marca'
-                        />
-                    </Grid>
-
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='modelo'
-                            value={body.modelo}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Modelo'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='color'
-                            value={body.color}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Color'
-                        />
-                    </Grid>
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='uso'
-                            value={body.uso}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Uso'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='linea'
-                            value={body.linea}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Linea'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='chasis'
-                            value={body.chasis}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Chasis'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='serie'
-                            value={body.serie}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Serie'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='numero_asientos'
-                            value={body.numero_asientos}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Numero de Asientos'
-                        />
-                    </Grid>
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='ejes'
-                            value={body.ejes}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Ejes'
-                        />
-                    </Grid>
-
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='numero_vin'
-                            value={body.numero_vin}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Numero de VIN'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='motor'
-                            value={body.motor}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Motor'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='cilindros'
-                            value={body.cilindros}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Cilindros'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='c_c'
-                            value={body.c_c}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='c_c'
-                        />
-                    </Grid>
-
-
-
-                    <Grid item xs={12} sm={6}>
-                        <InputLabel htmlFor="id_clientes">Cliente Vehiculo</InputLabel>
-                        <Select
-                            name="id_clientes"
-                            value={body.id_clientes || ''}
-                            onChange={onChange}
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                        >
-                            {roles.map((id_clie) => (
-                                <MenuItem key={id_clie.id} value={id_clie.id}>
-                                    {id_clie.nombre}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Grid>
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            type='date'
-                            margin='normal'
-                            name='fecha_venta'
-                            value={formatDate(body.fecha_venta)}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Fecha Venta'
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-
-
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='precio_compra'
-                            value={body.precio_compra}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Precio Compra'
-                        />
-                    </Grid>
-
-
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            margin='normal'
-                            name='precio_venta'
-                            value={body.precio_venta}
-                            onChange={onChange}
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            label='Precio Venta'
-                        />
-                    </Grid>
-
-                    
-                        
-                        
-                        
-                        
-                        
-                        
-
-
-
-
-
-
-
+                        {/* Campos de formulario */}
                     </Grid>
                 </DialogContent>
                 <DialogActions>
@@ -755,6 +287,7 @@ const generatePDFAutowini = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
             <Page title="FF| Registro Vehiculos Vendidos">
                 <ToastAutoHide message={mensaje} />
                 <Container maxWidth='lg'>
@@ -762,46 +295,20 @@ const generatePDFAutowini = () => {
                         <Typography variant="h5">Registro Vehiculos Vendidos</Typography>
                     </Box>
                     <Grid container spacing={2}>
-
-                        {
-                        /*
-
                         <Grid item xs={12} sm={3}>
-                           <Button onClick={() => {setIsEdit(false); handleDialog(); setBody(initialState);}} startIcon={<AddOutlined />} variant='contained' color='primary'> Agregar Producto</Button>
-                        </Grid> 
-
-                        */
-
-}
-
-
-
-                        <Grid item xs={12} sm={3}>
-                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Informe General de Vehiculos Vendidos</Button>
-                        </Grid>
-                        {/*
-                        <Grid item xs={12} sm={3}>
-                            <Button onClick={generatePDFQuimicosDeLaEra} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Reporte IAA</Button>
+                            <Button onClick={generatePDF} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>
+                                Informe General de Vehiculos Vendidos
+                            </Button>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            <Button onClick={generatePDFFerkica} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'> Reporte Autowini</Button>
+                            <Button 
+                                onClick={() => usuariosList.forEach(vehicle => generateContractPDF(vehicle))}
+                                startIcon={<PictureAsPdfOutlined />} 
+                                variant='contained' 
+                                color='primary'>
+                                Generar Contrato de Compra-Venta
+                            </Button>
                         </Grid>
-*/
-}
-
-{/*
-<Grid item xs={12} sm={3}>
-    <Button onClick={generatePDFIAA} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>Reporte IAA</Button>
-</Grid>
-<Grid item xs={12} sm={3}>
-    <Button onClick={generatePDFAutowini} startIcon={<PictureAsPdfOutlined />} variant='contained' color='primary'>Reporte Autowini</Button>
-</Grid>
-
-*/}
-
-
-
-
                         <Grid item xs={12} sm={12}>
                             <CommonTable data={usuariosList} columns={columns} />
                         </Grid>
@@ -810,6 +317,6 @@ const generatePDFAutowini = () => {
             </Page>
         </>
     );
-}
+};
 
 export default Registrov;
