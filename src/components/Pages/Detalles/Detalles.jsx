@@ -92,7 +92,7 @@ const Detalles = () => {
         { field: 'nombre_proveedor', headerName: 'Proveedor', width: 220 },
         {
             field: 'fecha_compra',
-            headerName: 'Fecha Entrada',
+            headerName: 'Fecha Compra',
             width: 220,
             valueFormatter: (params) => {
                 const fecha = new Date(params.value);
@@ -103,10 +103,12 @@ const Detalles = () => {
         { field: 'total', headerName: 'Total', width: 220 },
         {
             field: '',
-            headerName: 'Acciones',
+            headerName: 'Detalles',
             width: 200,
             renderCell: (params) => (
                 <Stack direction='row' divider={<Divider orientation="vertical" flexItem />} justifyContent="center" alignItems="center" spacing={2}>
+                    
+                    {/*
                     <IconButton size='small' onClick={() => { 
                         setIsEdit(true);
                         setBody(params.row);
@@ -114,12 +116,17 @@ const Detalles = () => {
                     }}>
                         <EditOutlined />
                     </IconButton>
+
+
+
                     <IconButton size='small' onClick={() => {
                         handleDialogDelete();
                         setIdDelete(params.id);
                     }}>
                         <DeleteOutline />
                     </IconButton>
+                    */}
+
                     <IconButton size='small' onClick={() => fetchProductDetails(params.row.id_compra)}>
                         <InfoOutlined  />
                     </IconButton>
@@ -300,7 +307,7 @@ const Detalles = () => {
                 <ToastAutoHide message={mensaje} />
                 <Container maxWidth='lg'>
                     <Box sx={{ pb: 5 }}>
-                        <Typography variant="h5">Inventario del Car Wash</Typography>
+                        <Typography variant="h5">Detalles Compras de Productos de Car Wash</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12}>
