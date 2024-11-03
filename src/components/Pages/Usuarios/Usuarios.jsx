@@ -18,8 +18,8 @@ const Usuarios = () => {
         usuario: "",
         contrasena: "",
         descripcion: "",
-        estado: "",
-        rol: " "
+        estado: ""
+      //  rol: " "
     };
 
 
@@ -48,7 +48,7 @@ const Usuarios = () => {
         { field: 'nombre', headerName: 'Nombre y Apellido', width: 220 },
         { field: 'usuario', headerName: 'Nombre de Usuario', width: 220 },
         { field: 'contrasena', headerName: 'Contraseña', width: 220 },
-        { field: 'descripcion', headerName: 'Rol', width: 220 },
+       // { field: 'descripcion', headerName: 'Rol', width: 220 },
         { field: 'estado', headerName: 'Estado', width: 220 },
         {
             field: '',
@@ -307,6 +307,8 @@ const Usuarios = () => {
                                 label='Contraseña'
                             />
                         </Grid>
+
+                        {/*
                         <Grid item xs={12}>
                         <InputLabel htmlFor="rol">Rol del usuario</InputLabel>
                         <Select
@@ -324,7 +326,7 @@ const Usuarios = () => {
                             ))}
                         </Select>
                     </Grid>
-
+*/}
 
 
 
